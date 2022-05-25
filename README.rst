@@ -1,37 +1,31 @@
 .. highlight:: rst
 
-============================
-reStructuredText with Sphinx
-============================
-
 -----------------
-Setting up Sphinx
+Kubernetes
 -----------------
 
+
 ^^^^^^^^^^
-Windows XP
+Commands
 ^^^^^^^^^^
 
-* Install `Python 2.7 <http://www.python.org/ftp/python/2.7/python-2.7.msi>`_
-* Install `Python Setuptools <http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11.win32-py2.7.exe#md5=57e1e64f6b7c7f1d2eddfc9746bbaf20>`_ (a package manager)
-* Set PATH environment variable for Python scripts:
 
-  - Right-click *My Computer*
-  - Click *Properties*
-  - Go to the *Advanced* tab
-  - Click the *Environment Variables* button
-  - From *System Variables*, select *Path*, and click *Edit*
-  - Assuming you installed Python to ``C:\Python27`` (the default), add this to the end of *Variable value*::
+  * Headings::
 
-       ;C:\Python27;C:\Python27\Scripts
+       Level 1
+       =======
+       
+       
+       Level 2
+       -------
+       
+       Level 3
+       ^^^^^^^
+       
+       Level 4
+       """""""
 
-* Launch the terminal: Click *Start*, then *Run*, write ``cmd``, press Enter.
-* Install Sphinx by typing the following commands to the terminal::
 
-     easy_install pip
-     pip install sphinx
-
-* Do not close the terminal, you are going to need it.
 
 ^^^^^^^^^
 Windows 7
