@@ -53,34 +53,6 @@ Commands::
 
 
 
-^^^^^^^^^
-Windows 7
-^^^^^^^^^
-
-* Install `Python 2.7 <http://www.python.org/ftp/python/2.7/python-2.7.msi>`_
-* Install `Python Setuptools <http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11.win32-py2.7.exe#md5=57e1e64f6b7c7f1d2eddfc9746bbaf20>`_ (a package manager)
-* Set PATH environment variable for Python scripts:
-
-
-
-
-
-^^^^^^^^^^^^^^^
-Debianoid Linux
-^^^^^^^^^^^^^^^
-
-* Python is installed (Unless you're using a brutally lightweight distro. Probably not ideal for documentation production).
-* Install Sphinx by typing the following commands to the terminal::
-  
-     sudo apt-get install python-pip
-     sudo pip install sphinx
-
-
-
-|
-
-
-
 --------------------------
 Creating the documentation
 --------------------------
@@ -186,7 +158,6 @@ Creating the documentation
        2      42           piskoty
        3      N/A          beton
        ====== ============ =======
-
 
 
 
