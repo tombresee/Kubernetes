@@ -10,7 +10,7 @@ Commands
 ^^^^^^^^^^
 
 
-  * Headings::
+Headings::
 
        Level 1
        =======
