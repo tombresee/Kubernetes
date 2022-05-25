@@ -10,7 +10,8 @@ Commands
 ^^^^^^^^^^
 
 
-Headings::
+
+Shortcuts::
 
        Level 1
        =======
@@ -25,6 +26,27 @@ Headings::
        Level 4
        """""""
 
+
+|
+
+
+Commands::
+
+       Level 1
+       =======
+       
+       
+       Level 2
+       -------
+       
+       Level 3
+       ^^^^^^^
+       
+       Level 4
+       """""""
+
+
+|
 
 
 ^^^^^^^^^
