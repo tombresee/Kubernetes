@@ -166,13 +166,15 @@ Creating the documentation
 Example documentation
 ---------------------
 
-* `Python documentation <http://docs.python.org/>`_
-* `Zope documentation <http://docs.zope.org/zope2/index.html>`_
-* `D:YAML documentation <http://dyaml.alwaysdata.net/static/html/doc_0.4/index.html>`_
+
+|
 
 
 -----
 Links
 -----
 
+* `OReilly Book <https://learning.oreilly.com/library/view/kubernetes-up-and/9781098110192/titlepage01.html>`_
+
 * `Sphinx <http://sphinx.pocoo.org>`_
+
