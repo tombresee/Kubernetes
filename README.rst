@@ -31,28 +31,6 @@ Shortcuts::
 
 |
 
-
-Commands::
-
-       Level 1
-       =======
-       
-       
-       Level 2
-       -------
-       
-       Level 3
-       ^^^^^^^
-       
-       Level 4
-       """""""
-
-
-
-|
-
-
-
 --------------------------
 Creating the documentation
 --------------------------
@@ -170,6 +148,14 @@ Creating the documentation
 Links
 -----
 
+* https://collabnix.github.io/kubelabs/   ******
+
+* https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html
+
+* https://github.com/collabnix/kubelabs
+
+* https://collabnix.com/kubectl-cheatsheet/
+
 * `OReilly Book <https://learning.oreilly.com/library/view/kubernetes-up-and/9781098110192/titlepage01.html>`_
 
 * `Sphinx <http://sphinx.pocoo.org>`_
@@ -189,6 +175,8 @@ Links
 * https://docs.docker.com/engine/reference/commandline/container_ls/
 
 * https://github.com/docker/labs/blob/master/beginner/chapters/votingapp.md     
+
+* https://collabnix.com/kubectl-cheatsheet/
 
 |
 |
