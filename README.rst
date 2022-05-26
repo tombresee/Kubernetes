@@ -148,7 +148,11 @@ Creating the documentation
 Links
 -----
 
+* https://collabnix.github.io/kubelabs/api.html
+
 * https://collabnix.github.io/kubelabs/   ******
+
+* https://e2286dbf385641eb8b0777c1b208cc2d-167772178-30000-cykoria04.environments.katacoda.com/#/cronjob?namespace=default
 
 * https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html
 
