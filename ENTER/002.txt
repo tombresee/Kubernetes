@@ -18,7 +18,8 @@
 
 
 
---- conventional commands ---
+
+--- shortcuts commands ---
 
 -a					all namespaces
 
@@ -36,6 +37,11 @@
 
 
 --- commands ---
+
+kubectl api-versions    It prints the supported versions of API on the cluster
+
+In order to pull the image and create a container, we will run the following command.
+$ kubectl create –f Tesing_for_Image_pull
 
 kubectl version
 
@@ -78,8 +84,9 @@ kubectl config
   use-context       Set the current-context in a kubeconfig file
   view              Display merged kubeconfig settings or a specified kubeconfig file
 
-
 kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+kubectl annotate pods tomcat description = 'my frontend'
 
 
 
