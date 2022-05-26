@@ -162,10 +162,6 @@ Creating the documentation
 
 
 
----------------------
-Example documentation
----------------------
-
 
 |
 
@@ -177,4 +173,25 @@ Links
 * `OReilly Book <https://learning.oreilly.com/library/view/kubernetes-up-and/9781098110192/titlepage01.html>`_
 
 * `Sphinx <http://sphinx.pocoo.org>`_
+
+* https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+* https://www.docker.com/blog/how-kubernetes-works-under-the-hood-with-docker-desktop/
+
+* https://birthday.play-with-docker.com/kubernetes-docker-desktop/
+
+* htps://github.com/kubernetes-sigs/metrics-server
+
+* https://www.docker.com/101-tutorial/
+
+* https://betterprogramming.pub/dockers-voting-app-on-swarm-kubernetes-and-nomad-8835a82050cf
+
+* https://docs.docker.com/engine/reference/commandline/container_ls/
+
+* https://github.com/docker/labs/blob/master/beginner/chapters/votingapp.md     
+
+|
+|
+|
+|
 
