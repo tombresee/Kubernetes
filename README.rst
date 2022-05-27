@@ -182,6 +182,8 @@ Links
 
 * https://collabnix.com/kubectl-cheatsheet/
 
+* https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/
+
 |
 |
 |

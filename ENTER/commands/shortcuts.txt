@@ -1,0 +1,26 @@
+
+
+--- shortcut names ---
+
+componentstatuses                 cs                                                        configmaps                        cm                                                         
+endpoints                         ep                                                         
+events                            ev        ***                                                          
+limitranges                       limits                                                     namespaces                        ns        ***                                                      
+nodes                             no                                                        persistentvolumeclaims            pvc                                                        
+persistentvolumes                 pv                                                        pods                              po        ***                                                      
+replicationcontrollers            rc                                                        esourcequotas                     quota                                                      
+serviceaccounts                   sa                                                        services                          svc       ***                                                   
+customresourcedefinitions         crd,crds     
+daemonsets                        ds                                                    deployments                       deploy    ***                                              
+replicasets                       rs                                                    
+statefulsets                      sts                                                   
+horizontalpodautoscalers          hpa                                          cronjobs                          cj          
+certificatesigningrequests        csr          
+ingresses                         ing          
+networkpolicies                   netpol       
+Noddisruptionbudgets              pdb                                               
+podsecuritypolicies               psp          
+priorityclasses                   pc           
+storageclasses                    sc           
+
+

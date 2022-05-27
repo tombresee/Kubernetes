@@ -1,0 +1,459 @@
+
+
+
+
+
+> kubectl describe pods kube-apiserver-docker-desktop -n kube-system
+
+Name:                 kube-apiserver-docker-desktop    
+
+Namespace:            kube-system
+
+Priority:             2000001000
+
+Priority Class Name:  system-node-critical
+
+Node:                 docker-desktop/192.168.65.4      ? why adding the ip block ? 
+
+Start Time:           Wed, 25 May 2022 17:06:27 -0500
+
+Labels:               component=kube-apiserver
+                      tier=control-plane
+
+Annotations:          kubeadm.kubernetes.io/kube-apiserver.advertise-address.endpoint: 192.168.65.4:6443
+                      kubernetes.io/config.hash: f76ea91a200a6b1cfe31c7a114460aac
+                      kubernetes.io/config.mirror: f76ea91a200a6b1cfe31c7a114460aac
+                      kubernetes.io/config.seen: 2022-05-25T22:06:27.058720322Z
+                      kubernetes.io/config.source: file
+                      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+Status:               Running
+IP:                   192.168.65.4
+IPs:
+  IP:           192.168.65.4
+Controlled By:  Node/docker-desktop
+Containers:
+  kube-apiserver:
+    Container ID:  docker://ecb85d7c282813dd12c27c7e03af44ca11161d10c5b7292793e025e3a19b0aa0
+    Image:         k8s.gcr.io/kube-apiserver:v1.24.0
+    Image ID:      docker://sha256:529072250ccc6301cb341cd7359c9641b94a6f837f86f82b1223a59bb0712e64
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      kube-apiserver
+      --advertise-address=192.168.65.4
+      --allow-privileged=true
+      --authorization-mode=Node,RBAC
+      --client-ca-file=/run/config/pki/ca.crt
+      --enable-admission-plugins=NodeRestriction
+      --enable-bootstrap-token-auth=true
+      --etcd-cafile=/run/config/pki/etcd/ca.crt
+      --etcd-certfile=/run/config/pki/apiserver-etcd-client.crt
+      --etcd-keyfile=/run/config/pki/apiserver-etcd-client.key
+      --etcd-servers=https://127.0.0.1:2379
+      --kubelet-client-certificate=/run/config/pki/apiserver-kubelet-client.crt
+      --kubelet-client-key=/run/config/pki/apiserver-kubelet-client.key
+      --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+      --proxy-client-cert-file=/run/config/pki/front-proxy-client.crt
+      --proxy-client-key-file=/run/config/pki/front-proxy-client.key
+      --requestheader-allowed-names=front-proxy-client
+      --requestheader-client-ca-file=/run/config/pki/front-proxy-ca.crt
+      --requestheader-extra-headers-prefix=X-Remote-Extra-
+      --requestheader-group-headers=X-Remote-Group
+      --requestheader-username-headers=X-Remote-User
+      --secure-port=6443
+      --service-account-issuer=https://kubernetes.default.svc.cluster.local
+      --service-account-key-file=/run/config/pki/sa.pub
+      --service-account-signing-key-file=/run/config/pki/sa.key
+      --service-cluster-ip-range=10.96.0.0/12
+      --tls-cert-file=/run/config/pki/apiserver.crt
+      --tls-private-key-file=/run/config/pki/apiserver.key
+      --watch-cache=false
+    State:          Running
+      Started:      Fri, 27 May 2022 09:08:46 -0500
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    255
+      Started:      Thu, 26 May 2022 13:31:20 -0500
+      Finished:     Fri, 27 May 2022 09:08:35 -0500
+    Ready:          True
+    Restart Count:  13
+    Requests:
+      cpu:        250m
+    Liveness:     http-get https://192.168.65.4:6443/livez delay=10s timeout=15s period=10s #success=1 #failure=8
+    Readiness:    http-get https://192.168.65.4:6443/readyz delay=0s timeout=15s period=1s #success=1 #failure=3
+    Startup:      http-get https://192.168.65.4:6443/livez delay=10s timeout=15s period=10s #success=1 #failure=24
+    Environment:  <none>
+    Mounts:
+      /etc/ca-certificates from etc-ca-certificates (ro)
+      /etc/ssl/certs from ca-certs (ro)
+      /run/config/pki from k8s-certs (ro)
+      /usr/local/share/ca-certificates from usr-local-share-ca-certificates (ro)
+      /usr/share/ca-certificates from usr-share-ca-certificates (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  ca-certs:
+    Type:          HostPath (bare host directory volume)
+    Path:          /etc/ssl/certs
+    HostPathType:  DirectoryOrCreate
+  etc-ca-certificates:
+    Type:          HostPath (bare host directory volume)
+    Path:          /etc/ca-certificates
+    HostPathType:  DirectoryOrCreate
+  k8s-certs:
+    Type:          HostPath (bare host directory volume)
+    Path:          /run/config/pki
+    HostPathType:  DirectoryOrCreate
+  usr-local-share-ca-certificates:
+    Type:          HostPath (bare host directory volume)
+    Path:          /usr/local/share/ca-certificates
+    HostPathType:  DirectoryOrCreate
+  usr-share-ca-certificates:
+    Type:          HostPath (bare host directory volume)
+    Path:          /usr/share/ca-certificates
+    HostPathType:  DirectoryOrCreate
+QoS Class:         Burstable
+Node-Selectors:    <none>
+Tolerations:       :NoExecute op=Exists
+Events:
+  Type    Reason          Age   From     Message
+  ----    ------          ----  ----     -------
+  Normal  SandboxChanged  38m   kubelet  Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          38m   kubelet  Container image "k8s.gcr.io/kube-apiserver:v1.24.0" already present on machine
+  Normal  Created         38m   kubelet  Created container kube-apiserver
+  Normal  Started         38m   kubelet  Started container kube-apiserver
+
+
+
+
+
+in addition to kubectl describe pod, another way to get extra information about a pod 
+(beyond what is provided by kubectl get pod) is to pass the -o yaml output format 
+flag to kubectl get pod
+
+kubectl get pod nginx-deployment-1006230814-6winp -o yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2022-02-17T21:51:01Z"
+  generateName: nginx-deployment-67d4bdd6f5-
+  labels:
+    app: nginx
+    pod-template-hash: 67d4bdd6f5
+  name: nginx-deployment-67d4bdd6f5-w6kd7
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: nginx-deployment-67d4bdd6f5
+    uid: 7d41dfd4-84c0-4be4-88ab-cedbe626ad82
+  resourceVersion: "1364"
+  uid: a6501da1-0447-4262-98eb-c03d4002222e
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: nginx
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 500m
+        memory: 128Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-bgsgp
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: kube-worker-1
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-bgsgp
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-17T21:51:01Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-17T21:51:06Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-17T21:51:06Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-02-17T21:51:01Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://5403af59a2b46ee5a23fb0ae4b1e077f7ca5c5fb7af16e1ab21c00e0e616462a
+    image: docker.io/library/nginx:latest
+    imageID: docker.io/library/nginx@sha256:2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767
+    lastState: {}
+    name: nginx
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2022-02-17T21:51:05Z"
+  hostIP: 192.168.0.113
+  phase: Running
+  podIP: 10.88.0.3
+  podIPs:
+  - ip: 10.88.0.3
+  - ip: 2001:db8::1
+  qosClass: Guaranteed
+  startTime: "2022-02-17T21:51:01Z"
+
+
+
+
+
+
+> kubectl get pods kube-apiserver-docker-desktop  -o yaml -n kube-system
+
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubeadm.kubernetes.io/kube-apiserver.advertise-address.endpoint: 192.168.65.4:6443
+    kubernetes.io/config.hash: f76ea91a200a6b1cfe31c7a114460aac
+    kubernetes.io/config.mirror: f76ea91a200a6b1cfe31c7a114460aac
+    kubernetes.io/config.seen: "2022-05-25T22:06:27.058720322Z"
+    kubernetes.io/config.source: file
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+  creationTimestamp: "2022-05-25T22:06:34Z"
+  labels:
+    component: kube-apiserver
+    tier: control-plane
+  name: kube-apiserver-docker-desktop
+  namespace: kube-system
+  ownerReferences:
+  - apiVersion: v1
+    controller: true
+    kind: Node
+    name: docker-desktop
+    uid: 5d4ed3eb-b957-4919-9d83-4ca3ec667ed5
+  resourceVersion: "21584"
+  uid: 81dddf13-bdc7-4987-b1c0-d55cc45ab12d
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --advertise-address=192.168.65.4
+    - --allow-privileged=true
+    - --authorization-mode=Node,RBAC
+    - --client-ca-file=/run/config/pki/ca.crt
+    - --enable-admission-plugins=NodeRestriction
+    - --enable-bootstrap-token-auth=true
+    - --etcd-cafile=/run/config/pki/etcd/ca.crt
+    - --etcd-certfile=/run/config/pki/apiserver-etcd-client.crt
+    - --etcd-keyfile=/run/config/pki/apiserver-etcd-client.key
+    - --etcd-servers=https://127.0.0.1:2379
+    - --kubelet-client-certificate=/run/config/pki/apiserver-kubelet-client.crt
+    - --kubelet-client-key=/run/config/pki/apiserver-kubelet-client.key
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --proxy-client-cert-file=/run/config/pki/front-proxy-client.crt
+    - --proxy-client-key-file=/run/config/pki/front-proxy-client.key
+    - --requestheader-allowed-names=front-proxy-client
+    - --requestheader-client-ca-file=/run/config/pki/front-proxy-ca.crt
+    - --requestheader-extra-headers-prefix=X-Remote-Extra-
+    - --requestheader-group-headers=X-Remote-Group
+    - --requestheader-username-headers=X-Remote-User
+    - --secure-port=6443
+    - --service-account-issuer=https://kubernetes.default.svc.cluster.local
+    - --service-account-key-file=/run/config/pki/sa.pub
+    - --service-account-signing-key-file=/run/config/pki/sa.key
+    - --service-cluster-ip-range=10.96.0.0/12
+    - --tls-cert-file=/run/config/pki/apiserver.crt
+    - --tls-private-key-file=/run/config/pki/apiserver.key
+    - --watch-cache=false
+    image: k8s.gcr.io/kube-apiserver:v1.24.0
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 8
+      httpGet:
+        host: 192.168.65.4
+        path: /livez
+        port: 6443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 15
+    name: kube-apiserver
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        host: 192.168.65.4
+        path: /readyz
+        port: 6443
+        scheme: HTTPS
+      periodSeconds: 1
+      successThreshold: 1
+      timeoutSeconds: 15
+    resources:
+      requests:
+        cpu: 250m
+    startupProbe:
+      failureThreshold: 24
+      httpGet:
+        host: 192.168.65.4
+        path: /livez
+        port: 6443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 15
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/ssl/certs
+      name: ca-certs
+      readOnly: true
+    - mountPath: /etc/ca-certificates
+      name: etc-ca-certificates
+      readOnly: true
+    - mountPath: /run/config/pki
+      name: k8s-certs
+      readOnly: true
+    - mountPath: /usr/local/share/ca-certificates
+      name: usr-local-share-ca-certificates
+      readOnly: true
+    - mountPath: /usr/share/ca-certificates
+      name: usr-share-ca-certificates
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostNetwork: true
+  nodeName: docker-desktop
+  preemptionPolicy: PreemptLowerPriority
+  priority: 2000001000
+  priorityClassName: system-node-critical
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    operator: Exists
+  volumes:
+  - hostPath:
+      path: /etc/ssl/certs
+      type: DirectoryOrCreate
+    name: ca-certs
+  - hostPath:
+      path: /etc/ca-certificates
+      type: DirectoryOrCreate
+    name: etc-ca-certificates
+  - hostPath:
+      path: /run/config/pki
+      type: DirectoryOrCreate
+    name: k8s-certs
+  - hostPath:
+      path: /usr/local/share/ca-certificates
+      type: DirectoryOrCreate
+    name: usr-local-share-ca-certificates
+  - hostPath:
+      path: /usr/share/ca-certificates
+      type: DirectoryOrCreate
+    name: usr-share-ca-certificates
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-05-25T22:06:27Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-05-27T14:09:02Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-05-27T14:09:02Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-05-25T22:06:27Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://ecb85d7c282813dd12c27c7e03af44ca11161d10c5b7292793e025e3a19b0aa0
+    image: k8s.gcr.io/kube-apiserver:v1.24.0
+    imageID: docker://sha256:529072250ccc6301cb341cd7359c9641b94a6f837f86f82b1223a59bb0712e64
+    lastState:
+      terminated:
+        containerID: docker://930896ebb746939bbc5d981f9eda37e19cdb16914472f78fa3d8d8c78b86e115
+        exitCode: 255
+        finishedAt: "2022-05-27T14:08:35Z"
+        reason: Error
+        startedAt: "2022-05-26T18:31:20Z"
+    name: kube-apiserver
+    ready: true
+    restartCount: 13
+    started: true
+    state:
+      running:
+        startedAt: "2022-05-27T14:08:46Z"
+  hostIP: 192.168.65.4
+  phase: Running
+  podIP: 192.168.65.4
+  podIPs:
+  - ip: 192.168.65.4
+  qosClass: Burstable
+  startTime: "2022-05-25T22:06:27Z"
+
+
+

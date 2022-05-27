@@ -1,0 +1,57 @@
+
+
+
+--- get events ---
+
+
+> kubectl get events -n kube-system
+LAST SEEN   TYPE      REASON           OBJECT                                       MESSAGE
+40m         Normal    SandboxChanged   pod/coredns-6d4b75cb6d-7lrqq                 Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/coredns-6d4b75cb6d-7lrqq                 Container image "k8s.gcr.io/coredns/coredns:v1.8.6" already present on machine
+40m         Normal    Created          pod/coredns-6d4b75cb6d-7lrqq                 Created container coredns
+40m         Normal    Started          pod/coredns-6d4b75cb6d-7lrqq                 Started container coredns
+40m         Warning   Unhealthy        pod/coredns-6d4b75cb6d-7lrqq                 Readiness probe failed: HTTP probe failed with statuscode: 503
+40m         Normal    SandboxChanged   pod/coredns-6d4b75cb6d-hwrst                 Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/coredns-6d4b75cb6d-hwrst                 Container image "k8s.gcr.io/coredns/coredns:v1.8.6" already present on machine
+40m         Normal    Created          pod/coredns-6d4b75cb6d-hwrst                 Created container coredns
+40m         Normal    Started          pod/coredns-6d4b75cb6d-hwrst                 Started container coredns
+40m         Warning   Unhealthy        pod/coredns-6d4b75cb6d-hwrst                 Readiness probe failed: HTTP probe failed with statuscode: 503
+39m         Normal    LeaderElection   endpoints/docker.io-hostpath                 storage-provisioner_759230f9-7a3e-4b97-be1f-167e8ca27aaa became leader
+40m         Normal    SandboxChanged   pod/etcd-docker-desktop                      Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/etcd-docker-desktop                      Container image "k8s.gcr.io/etcd:3.5.3-0" already present on machine
+40m         Normal    Created          pod/etcd-docker-desktop                      Created container etcd
+40m         Normal    Started          pod/etcd-docker-desktop                      Started container etcd
+40m         Normal    SandboxChanged   pod/kube-apiserver-docker-desktop            Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/kube-apiserver-docker-desktop            Container image "k8s.gcr.io/kube-apiserver:v1.24.0" already present on machine
+40m         Normal    Created          pod/kube-apiserver-docker-desktop            Created container kube-apiserver
+40m         Normal    Started          pod/kube-apiserver-docker-desktop            Started container kube-apiserver
+40m         Normal    SandboxChanged   pod/kube-controller-manager-docker-desktop   Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/kube-controller-manager-docker-desktop   Container image "k8s.gcr.io/kube-controller-manager:v1.24.0" already present on machine
+40m         Normal    Created          pod/kube-controller-manager-docker-desktop   Created container kube-controller-manager
+40m         Normal    Started          pod/kube-controller-manager-docker-desktop   Started container kube-controller-manager
+40m         Normal    SandboxChanged   pod/kube-proxy-rn8nq                         Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/kube-proxy-rn8nq                         Container image "k8s.gcr.io/kube-proxy:v1.24.0" already present on machine
+40m         Warning   Failed           pod/kube-proxy-rn8nq                         Error: services have not yet been read at least once, cannot construct envvars
+40m         Warning   BackOff          pod/kube-proxy-rn8nq                         Back-off restarting failed container
+40m         Normal    Created          pod/kube-proxy-rn8nq                         Created container kube-proxy
+40m         Normal    Started          pod/kube-proxy-rn8nq                         Started container kube-proxy
+40m         Normal    SandboxChanged   pod/kube-scheduler-docker-desktop            Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/kube-scheduler-docker-desktop            Container image "k8s.gcr.io/kube-scheduler:v1.24.0" already present on machine
+40m         Normal    Created          pod/kube-scheduler-docker-desktop            Created container kube-scheduler
+40m         Normal    Started          pod/kube-scheduler-docker-desktop            Started container kube-scheduler
+40m         Normal    LeaderElection   lease/kube-scheduler                         docker-desktop_3b839e16-f36d-4954-af94-9ba0cb0e89f7 became leader
+40m         Normal    SandboxChanged   pod/storage-provisioner                      Pod sandbox changed, it will be killed and re-created.
+40m         Normal    Pulled           pod/storage-provisioner                      Container image "docker/desktop-storage-provisioner:v2.0" already present on machine
+40m         Normal    Created          pod/storage-provisioner                      Created container storage-provisioner
+40m         Normal    Started          pod/storage-provisioner                      Started container storage-provisioner
+40m         Warning   BackOff          pod/storage-provisioner                      Back-off restarting failed container
+16h         Normal    Pulled           pod/vpnkit-controller                        Container image "docker/desktop-vpnkit-controller:v2.0" already present on machine
+16h         Normal    Created          pod/vpnkit-controller                        Created container vpnkit-controller
+16h         Normal    Started          pod/vpnkit-controller                        Started container vpnkit-controller
+16h         Warning   BackOff          pod/vpnkit-controller                        Back-off restarting failed container
+40m         Normal    SandboxChanged   pod/vpnkit-controller                        Pod sandbox changed, it will be killed and re-created.
+14m         Normal    Pulled           pod/vpnkit-controller                        Container image "docker/desktop-vpnkit-controller:v2.0" already present on machine
+14m         Normal    Created          pod/vpnkit-controller                        Created container vpnkit-controller
+14m         Normal    Started          pod/vpnkit-controller                        Started container vpnkit-controller
+14m         Warning   BackOff          pod/vpnkit-controller                        Back-off restarting failed container
+
