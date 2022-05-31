@@ -152,6 +152,8 @@ $ kubectl run TOM --image=TOM --record
 
 ## Labels
 ```
+$ kubectl label pods bar color=red
+$ kubectl label pods bar color- # remove label 
 ```
 
 
