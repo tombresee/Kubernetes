@@ -441,13 +441,15 @@ kubectl --help
 
 Base
   create        Create a resource from a file or from stdin
-  expose        Take a replication controller, service, deployment or pod and expose it as a new Kubernetes service
+  expose        Take a replication controller, service, deployment or pod 
+                and expose it as a new Kubernetes service
   run           Run a particular image on the cluster
   set           Set specific features on objects
   explain       Get documentation for a resource
   get           Display one or many resources
   edit          Edit a resource on the server
-  delete        Delete resources by file names, stdin, resources and names, or by resources and label selector
+  delete        Delete resources by file names, stdin, resources and names, 
+                or by resources and label selector
 
 Deploy Commands:
   rollout       Manage the rollout of a resource
