@@ -24,6 +24,11 @@ List of general purpose commands for Kubernetes management:
 - [Pod Security Policies](#pod_security_policies)
 - [Network Policies](#network_policies)
 
+
+<br>
+
+
+
 ## VIM Setup for Yaml files
 
 Put the following lines in ~/.vimrc:
@@ -50,6 +55,11 @@ Keyboard hints:
 
 - ctrl + f: auto indent line (requires INSERT mode)
 
+
+<br>
+
+
+
 ## PODS
 
 ```
@@ -60,6 +70,10 @@ $ kubectl get pod TOM -o yaml
 $ kubectl describe pod TOM
 ```
 
+<br>
+
+
+
 ## Create Deployments
 
 Create single deployment
@@ -68,11 +82,21 @@ Create single deployment
 $ kubectl run TOM --image=TOM --record
 ```
 
+
+<br>
+
+
+
 ## Scaling PODs
 
 ```bash
 $ kubectl scale deployment/POD_NAME --replicas=N
 ```
+
+
+<br>
+
+
 
 ## POD Upgrade and history
 
@@ -88,6 +112,11 @@ $ kubectl rollout history deployment/DEPLOYMENT_NAME
 $ kubectl rollout undo deployment/DEPLOYMENT_NAME --to-revision=N
 ```
 
+
+<br>
+
+
+
 ## Services
 
 List services
@@ -102,6 +131,11 @@ Expose PODs as services (creates endpoints)
 $ kubectl expose deployment/TOM --port=2001 --type=NodePort
 ```
 
+
+<br>
+
+
+
 ## Volumes
 
 Lits Persistent Volumes and Persistent Volumes Claims:
@@ -111,6 +145,11 @@ $ kubectl get pv
 $ kubectl get pvc
 ```
 
+
+<br>
+
+
+
 ## Secrets
 
 ```
@@ -119,12 +158,22 @@ $ kubectl create secret generic --help
 $ kubectl create secret generic mysql --from-literal=password=root
 $ kubectl get secrets mysql -o yaml
 ```
+
+<br>
+
+
+
 ## ConfigMaps
 
 ```
 $ kubectl create configmap foobar --from-file=config.js
 $ kubectl get configmap foobar -o yaml
 ```
+
+
+<br>
+
+
 
 ## DNS
 
@@ -142,6 +191,11 @@ $ kubectl exec -ti busybox -- nslookup nginx
 
 > Note: kube-proxy running in the worker nodes manage services and set iptables rules to direct traffic.
 
+
+<br>
+
+
+
 ## Ingress
 
 Commands to manage Ingress for ClusterIP service type:
@@ -155,6 +209,10 @@ Spec for ingress:
 
 - [backend](https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx)
  
+
+<br>
+
+
 ## Horizontal Pod Autoscaler
 
 When heapster runs:
@@ -164,12 +222,22 @@ $ kubectl get hpa
 $ kubectl autoscale --help
 ```
 
+
+<br>
+
+
+
 ## DaemonSets
 
 ```
 $ kubectl get daemonsets
 $ kubectl get ds
 ```
+
+
+<br>
+
+
 
 ## Scheduler
 
@@ -186,11 +254,21 @@ $ kubectl proxy
 $ curl -H "Content-Type: application/json" -X POST --data @binding.json http://localhost:8001/api/v1/namespaces/default/pods/foobar-sched/binding
 ```
 
+
+<br>
+
+
+
 ## Tains and Tolerations
 
 ```
 $ kubectl taint node master foo=bar:NoSchedule
 ```
+
+
+<br>
+
+
 
 ## Troubleshooting
 
@@ -202,9 +280,16 @@ $ kubectl get nodes --show-labels
 $ kubectl get events
 ```
 
+
+
 Docs Cluster: 
 - https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
 - https://github.com/kubernetes/kubernetes/wiki/Debugging-FAQ
+
+
+<br>
+
+
 
 ## Role Based Access Control
 
@@ -219,6 +304,11 @@ $ kubectl create rolebinding foo --role=fluent-reader --user=minikube
 $ kubectl get rolebinding foo -o yaml
 ```
 
+
+<br>
+
+
+
 ## Security Contexts
 
 Docs: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -227,9 +317,19 @@ Docs: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
  - securityCOntext
    - runAsNonRoot: true
    
+
+<br>
+
+
+
 ## Pod Security Policies
 
 Docs: https://github.com/kubernetes/kubernetes/blob/master/examples/podsecuritypolicy/rbac/README.md
+
+
+<br>
+
+
 
 ## Network Policies
 
