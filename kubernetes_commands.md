@@ -25,7 +25,7 @@ List of general purpose commands for Kubernetes management:
 - [Services](#services)
 - [Volumes](#volumes)
 - [Secrets](#secrets)
-- [Port Forwarding](#portforwarding)
+- [Port Forwarding](#port_forwarding)
 - [ConfigMaps](#configmaps)
 - [Ingress](#ingress)
 - [Horizontal Pod Autoscalers](#horizontal-pod-autoscalers)
