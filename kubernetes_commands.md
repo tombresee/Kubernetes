@@ -28,7 +28,7 @@ List of general purpose commands for Kubernetes management:
 - [Port Forwarding](#Port-Forwarding)
 - [ConfigMaps](#configmaps)
 - [Ingress](#ingress)
-- [Horizontal Pod Autoscalers](#Horizontal-Pod-Autoscalers)
+- [Horizontal Pod Autoscalers](#horizontal-pod-autoscalers)
 - [Scheduler](#scheduler)
 - [Taints and Tolerations](#tains-and-tolerations)
 - [Troubleshooting](#troubleshooting)
@@ -49,6 +49,7 @@ List of general purpose commands for Kubernetes management:
 
 
 ```
+$ kubectl completion powershell | Out-String | Invoke-Expression
 $ kubectl get all
 $ kubectl get all -A 
 $ kubectl get pods,services, rs
@@ -248,6 +249,7 @@ $ kubectl get secrets mysql -o yaml
 ## Port Forwarding 
 
 ```
+$ kubectl port-forward <pod-name> 8080:80
 ```
 
 
@@ -376,7 +378,13 @@ $ kubectl exec
 $ kubectl exec -it <pod-name> -- bash
 
 $ kubectl get nodes --show-labels
+$ kubectl get nodes --show-labels -A
+
 $ kubectl get events
+$ kubectl get events -A 
+
+$ kubectl top nodes
+
 ```
 
 

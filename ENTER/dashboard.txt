@@ -1,0 +1,316 @@
+
+
+Dashboard 
+_________
+
+
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.1.0/aio/deploy/recommended.yaml
+
+
+
+(base) PS C:\Windows\system32> kubectl -n kubernetes-dashboard describe secret
+Name:         kubernetes-dashboard-certs
+Namespace:    kubernetes-dashboard
+Labels:       k8s-app=kubernetes-dashboard
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+
+
+Name:         kubernetes-dashboard-csrf
+Namespace:    kubernetes-dashboard
+Labels:       k8s-app=kubernetes-dashboard
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+csrf:  256 bytes
+
+
+Name:         kubernetes-dashboard-key-holder
+Namespace:    kubernetes-dashboard
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+pub:   459 bytes
+priv:  1679 bytes
+
+
+
+(base) PS C:\Windows\system32> kubectl -n kubernetes-dashboard describe secret -A
+Name:         bootstrap-token-abcdef
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Type:  bootstrap.kubernetes.io/token
+
+Data
+====
+usage-bootstrap-authentication:  4 bytes
+usage-bootstrap-signing:         4 bytes
+auth-extra-groups:               47 bytes
+expiration:                      20 bytes
+token-id:                        6 bytes
+token-secret:                    16 bytes
+
+
+Name:         kubernetes-dashboard-certs
+Namespace:    kubernetes-dashboard
+Labels:       k8s-app=kubernetes-dashboard
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+
+
+Name:         kubernetes-dashboard-csrf
+Namespace:    kubernetes-dashboard
+Labels:       k8s-app=kubernetes-dashboard
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+csrf:  256 bytes
+
+
+Name:         kubernetes-dashboard-key-holder
+Namespace:    kubernetes-dashboard
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+priv:  1679 bytes
+pub:   459 bytes
+(base) PS C:\Windows\system32>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
