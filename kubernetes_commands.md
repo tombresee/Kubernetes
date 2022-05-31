@@ -19,6 +19,7 @@ List of general purpose commands for Kubernetes management:
 - [Nodes](#nodes)
 - [Create](#create)
 - [Deployments](#deployments)
+- [Labels](#labels)
 - [Scaling PODs](#scaling-pods)
 - [POD Upgrade / History](#pod-upgrade-and-history)
 - [Services](#services)
@@ -125,7 +126,10 @@ $ kubectl delete node node_name # node removed from the cluster
 ## Create
 
 ```
-stuff
+# create object 
+$ kubectl apply -f obj.yaml
+# delete object
+$ kubectl delete -f obj.yaml
 ```
 
 
@@ -144,6 +148,15 @@ $ kubectl run TOM --image=TOM --record
 
 
 <br>
+
+
+## Labels
+```
+```
+
+
+<br>
+
 
 
 
