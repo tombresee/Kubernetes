@@ -1,0 +1,198 @@
+
+
+
+> kubectl cluster-info
+
+Kubernetes control plane is running at https://kubernetes.docker.internal:6443
+
+\CoreDNS is running at https://kubernetes.docker.internal:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get nodes
+NAME             STATUS   ROLES           AGE   VERSION
+docker-desktop   Ready    control-plane   41h   v1.24.0
+
+
+
+
+
+
+What is a Kubernetes cluster?
+
+A Kubernetes cluster is a set of nodes that run containerized applications. Containerizing applications packages an app with its dependences and some necessary services. They are more lightweight and flexible than virtual machines. In this way, Kubernetes clusters allow for applications to be more easily developed, moved and managed. 
+
+Kubernetes clusters allow containers to run across multiple machines and environments: virtual, physical, cloud-based, and on-premises. Kubernetes containers are not restricted to a specific operating system, unlike virtual machines. Instead, they are able to share operating systems and run anywhere.
+
+Kubernetes clusters are comprised of one master node and a number of worker nodes. These nodes can either be physical computers or virtual machines, depending on the cluster.
+
+The master node controls the state of the cluster; for example, which applications are running and their corresponding container images. The master node is the origin for all task assignments. It coordinates processes such as:
+
+Scheduling and scaling applications
+Maintaining a cluster’s state
+Implementing updates
+The worker nodes are the components that run these applications. Worker nodes perform tasks assigned by the master node. They can either be virtual machines or physical computers, all operating as part of one system.
+
+There must be a minimum of one master node and one worker node for a Kubernetes cluster to be operational. For production and staging, the cluster is distributed across multiple worker nodes. For testing, the components can all run on the same physical or virtual node.
+
+A namespace is a way for a Kubernetes user to organize many different clusters within just one physical cluster. Namespaces enable users to divide cluster resources within the physical cluster among different teams via resource quotas. For this reason, they are ideal in situations involving complex projects or multiple teams. 
+
+
+What makes up a Kubernetes cluster?
+
+A Kubernetes cluster contains six main components:
+
+API server: Exposes a REST interface to all Kubernetes resources. Serves as the front end of the Kubernetes control plane.
+
+Scheduler: Places containers according to resource requirements and metrics. Makes note of Pods with no assigned node, and selects nodes for them to run on.
+
+Controller manager: Runs controller processes and reconciles the cluster’s actual state with its desired specifications. Manages controllers such as node controllers, endpoints controllers and replication controllers.
+
+Kubelet: Ensures that containers are running in a Pod by interacting with the Docker engine , the default program for creating and managing containers. Takes a set of provided PodSpecs and ensures that their corresponding containers are fully operational.
+
+Kube-proxy: Manages network connectivity and maintains network rules across nodes. Implements the Kubernetes Service concept across every node in a given cluster.
+
+Etcd: Stores all cluster data. Consistent and highly available Kubernetes backing store. 
+
+These six components can each run on Linux or as Docker containers. The master node runs the API server, scheduler and controller manager, and the worker nodes run the kubelet and kube-proxy.
+
+
+
+https://www.vmware.com/topics/glossary/content/kubernetes-cluster.html#:~:text=A%20Kubernetes%20cluster%20is%20a,and%20flexible%20than%20virtual%20machines.
+
+
+
+Using kubectl to Create a Deployment
+
+Deploy your first app on Kubernetes with kubectl.
+
+Kubernetes Deployments
+
+Once you have a running Kubernetes cluster, you can deploy your containerized applications on top of it. To do so, you create a Kubernetes Deployment configuration. The Deployment instructs Kubernetes how to create and update instances of your application. Once you've created a Deployment, the Kubernetes control plane schedules the application instances included in that Deployment to run on individual Nodes in the cluster.
+
+Once the application instances are created, a Kubernetes Deployment Controller continuously monitors those instances. If the Node hosting an instance goes down or is deleted, the Deployment controller replaces the instance with an instance on another Node in the cluster. This provides a self-healing mechanism to address machine failure or maintenance.
+
+In a pre-orchestration world, installation scripts would often be used to start applications, but they did not allow recovery from machine failure. By both creating your application instances and keeping them running across Nodes, Kubernetes Deployments provide a fundamentally different approach to application management.
+
+
+
+
+
+Deploying your first app on Kubernetes
+
+You can create and manage a Deployment by using the Kubernetes command line interface, Kubectl. Kubectl uses the Kubernetes API to interact with the cluster. In this module, you'll learn the most common Kubectl commands needed to create Deployments that run your applications on a Kubernetes cluster.
+
+When you create a Deployment, you'll need to specify the container image for your application and the number of replicas that you want to run. You can change that information later by updating your Deployment; Modules 5 and 6 of the bootcamp discuss how you can scale and update your Deployments.
+
+Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes
+
+For your first Deployment, you'll use a hello-node application packaged in a Docker container that uses NGINX to echo back all the requests. (If you didn't already try creating a hello-node application and deploying it using a container, you can do that first by following the instructions from the Hello Minikube tutorial).
+
+
+
+
+
+
+
+--- here we go ---
+
+paste commands from demo here: https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/
+
+Deploy our app
+
+Let’s deploy our first app on Kubernetes with the kubectl create deployment command. 
+
+We need to provide the deployment name and app image location (include the full repository url for images hosted outside Docker hub).
+
+  comm is:  kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+
+
+
+> kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+deployment.apps/kubernetes-bootcamp created   < - first step ! 
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployment
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   1/1     1            1           91s
+
+
+
+question:  is a deployment an app ????????????????????????
+
+
+
+(base) PS C:\Windows\system32> kubectl describe deployment kubernetes-bootcamp   < - - - - 
+
+Name:                   kubernetes-bootcamp
+
+Namespace:              default                     # because i created there
+
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+
+Labels:                 app=kubernetes-bootcamp     # so you can filter by this 
+
+Annotations:            deployment.kubernetes.io/revision: 1
+
+Selector:               app=kubernetes-bootcamp
+
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+
+StrategyType:           RollingUpdate
+
+MinReadySeconds:        0
+
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  115s  deployment-controller  Scaled up replica set kubernetes-bootcamp-d9b4bdd78 to 1
+
+
+
+Great! You just deployed your first application by creating a deployment. This performed a few things for you:
+
+searched for a suitable node where an instance of the application could be run (we have only 1 available node)
+
+scheduled the application to run on that Node
+
+configured the cluster to reschedule the instance on a new Node when needed
+
+To list your deployments use the get deployments command:
+
+
+
+
+
+
+
+
+
+
+
+

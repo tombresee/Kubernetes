@@ -1,0 +1,118 @@
+
+
+
+
+
+https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/
+
+For this example we'll use a Deployment to create two pods
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+
+Create deployment by running following command:
+
+kubectl apply -f https://k8s.io/examples/application/nginx-with-request.yaml
+
+deployment.apps/nginx-deployment created
+
+
+
+kubectl get pods
+
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-67d4bdd6f5-cx2nz   1/1     Running   0          13s
+nginx-deployment-67d4bdd6f5-w6kd7   1/1     Running   0          13s
+
+
+
+
+
+
+kubectl describe pod nginx-deployment-67d4bdd6f5-w6kd7
+
+Name:         nginx-deployment-67d4bdd6f5-w6kd7
+Namespace:    default
+Priority:     0
+Node:         kube-worker-1/192.168.0.113
+Start Time:   Thu, 17 Feb 2022 16:51:01 -0500
+Labels:       app=nginx
+              pod-template-hash=67d4bdd6f5
+Annotations:  <none>
+Status:       Running
+IP:           10.88.0.3
+IPs:
+  IP:           10.88.0.3
+  IP:           2001:db8::1
+Controlled By:  ReplicaSet/nginx-deployment-67d4bdd6f5
+Containers:
+  nginx:
+    Container ID:   containerd://5403af59a2b46ee5a23fb0ae4b1e077f7ca5c5fb7af16e1ab21c00e0e616462a
+    Image:          nginx
+    Image ID:       docker.io/library/nginx@sha256:2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 17 Feb 2022 16:51:05 -0500
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:        500m
+      memory:     128Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-bgsgp (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-bgsgp:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Guaranteed
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  34s   default-scheduler  Successfully assigned default/nginx-deployment-67d4bdd6f5-w6kd7 to kube-worker-1
+  Normal  Pulling    31s   kubelet            Pulling image "nginx"
+  Normal  Pulled     30s   kubelet            Successfully pulled image "nginx" in 1.146417389s
+  Normal  Created    30s   kubelet            Created container nginx
+  Normal  Started    30s   kubelet            Started container nginx
+
+
+
+

@@ -1,0 +1,618 @@
+
+
+
+> kubectl cluster-info
+
+Kubernetes control plane is running at https://kubernetes.docker.internal:6443
+
+\CoreDNS is running at https://kubernetes.docker.internal:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get nodes
+NAME             STATUS   ROLES           AGE   VERSION
+docker-desktop   Ready    control-plane   41h   v1.24.0
+
+
+
+
+
+
+What is a Kubernetes cluster?
+
+A Kubernetes cluster is a set of nodes that run containerized applications. Containerizing applications packages an app with its dependences and some necessary services. They are more lightweight and flexible than virtual machines. In this way, Kubernetes clusters allow for applications to be more easily developed, moved and managed. 
+
+Kubernetes clusters allow containers to run across multiple machines and environments: virtual, physical, cloud-based, and on-premises. Kubernetes containers are not restricted to a specific operating system, unlike virtual machines. Instead, they are able to share operating systems and run anywhere.
+
+Kubernetes clusters are comprised of one master node and a number of worker nodes. These nodes can either be physical computers or virtual machines, depending on the cluster.
+
+The master node controls the state of the cluster; for example, which applications are running and their corresponding container images. The master node is the origin for all task assignments. It coordinates processes such as:
+
+Scheduling and scaling applications
+Maintaining a cluster’s state
+Implementing updates
+The worker nodes are the components that run these applications. Worker nodes perform tasks assigned by the master node. They can either be virtual machines or physical computers, all operating as part of one system.
+
+There must be a minimum of one master node and one worker node for a Kubernetes cluster to be operational. For production and staging, the cluster is distributed across multiple worker nodes. For testing, the components can all run on the same physical or virtual node.
+
+A namespace is a way for a Kubernetes user to organize many different clusters within just one physical cluster. Namespaces enable users to divide cluster resources within the physical cluster among different teams via resource quotas. For this reason, they are ideal in situations involving complex projects or multiple teams. 
+
+
+What makes up a Kubernetes cluster?
+
+A Kubernetes cluster contains six main components:
+
+API server: Exposes a REST interface to all Kubernetes resources. Serves as the front end of the Kubernetes control plane.
+
+Scheduler: Places containers according to resource requirements and metrics. Makes note of Pods with no assigned node, and selects nodes for them to run on.
+
+Controller manager: Runs controller processes and reconciles the cluster’s actual state with its desired specifications. Manages controllers such as node controllers, endpoints controllers and replication controllers.
+
+Kubelet: Ensures that containers are running in a Pod by interacting with the Docker engine , the default program for creating and managing containers. Takes a set of provided PodSpecs and ensures that their corresponding containers are fully operational.
+
+Kube-proxy: Manages network connectivity and maintains network rules across nodes. Implements the Kubernetes Service concept across every node in a given cluster.
+
+Etcd: Stores all cluster data. Consistent and highly available Kubernetes backing store. 
+
+These six components can each run on Linux or as Docker containers. The master node runs the API server, scheduler and controller manager, and the worker nodes run the kubelet and kube-proxy.
+
+
+
+https://www.vmware.com/topics/glossary/content/kubernetes-cluster.html#:~:text=A%20Kubernetes%20cluster%20is%20a,and%20flexible%20than%20virtual%20machines.
+
+
+
+Using kubectl to Create a Deployment
+
+Deploy your first app on Kubernetes with kubectl.
+
+Kubernetes Deployments
+
+Once you have a running Kubernetes cluster, you can deploy your containerized applications on top of it. To do so, you create a Kubernetes Deployment configuration. The Deployment instructs Kubernetes how to create and update instances of your application. Once you've created a Deployment, the Kubernetes control plane schedules the application instances included in that Deployment to run on individual Nodes in the cluster.
+
+Once the application instances are created, a Kubernetes Deployment Controller continuously monitors those instances. If the Node hosting an instance goes down or is deleted, the Deployment controller replaces the instance with an instance on another Node in the cluster. This provides a self-healing mechanism to address machine failure or maintenance.
+
+In a pre-orchestration world, installation scripts would often be used to start applications, but they did not allow recovery from machine failure. By both creating your application instances and keeping them running across Nodes, Kubernetes Deployments provide a fundamentally different approach to application management.
+
+
+
+
+
+Deploying your first app on Kubernetes
+
+You can create and manage a Deployment by using the Kubernetes command line interface, Kubectl. Kubectl uses the Kubernetes API to interact with the cluster. In this module, you'll learn the most common Kubectl commands needed to create Deployments that run your applications on a Kubernetes cluster.
+
+When you create a Deployment, you'll need to specify the container image for your application and the number of replicas that you want to run. You can change that information later by updating your Deployment; Modules 5 and 6 of the bootcamp discuss how you can scale and update your Deployments.
+
+Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes
+
+For your first Deployment, you'll use a hello-node application packaged in a Docker container that uses NGINX to echo back all the requests. (If you didn't already try creating a hello-node application and deploying it using a container, you can do that first by following the instructions from the Hello Minikube tutorial).
+
+
+
+
+
+
+
+--- here we go ---
+
+paste commands from demo here: https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/
+
+Deploy our app
+
+Let’s deploy our first app on Kubernetes with the kubectl create deployment command. 
+
+We need to provide the deployment name and app image location (include the full repository url for images hosted outside Docker hub).
+
+  comm is:  kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+
+
+
+> kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+deployment.apps/kubernetes-bootcamp created   < - first step ! 
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployment
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   1/1     1            1           91s
+
+
+
+question:  is a deployment an app ????????????????????????
+
+
+
+(base) PS C:\Windows\system32> kubectl describe deployment kubernetes-bootcamp   < - - - - 
+
+Name:                   kubernetes-bootcamp
+
+Namespace:              default                     # because i created there
+
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+
+Labels:                 app=kubernetes-bootcamp     # so you can filter by this 
+
+Annotations:            deployment.kubernetes.io/revision: 1
+
+Selector:               app=kubernetes-bootcamp
+
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+
+StrategyType:           RollingUpdate
+
+MinReadySeconds:        0
+
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  115s  deployment-controller  Scaled up replica set kubernetes-bootcamp-d9b4bdd78 to 1
+
+
+
+Great! You just deployed your first application by creating a deployment. This performed a few things for you:
+
+   searched for a suitable node where an instance of the application could be run (we have only 1 available node)
+
+   scheduled the application to run on that Node
+
+   configured the cluster to reschedule the instance on a new Node when needed
+
+ 
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployments
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   1/1     1            1           5m53s
+
+
+
+
+
+We see that there is 1 deployment running a single instance of your app. 
+
+The instance is running inside a Docker container on your node.
+
+
+
+
+--- the deployment command created a pod --- 
+
+> kubectl get pods    # within default namespace 
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+
+kubernetes-bootcamp-d9b4bdd78-s89xj   1/1     Running   0          6m23s
+
+
+
+
+
+--- describe pod ---
+
+(base) PS C:\Windows\system32> kubectl describe pods
+
+Name:         kubernetes-bootcamp-d9b4bdd78-s89xj
+
+Namespace:    default
+
+Priority:     0
+
+Node:         docker-desktop/192.168.65.4
+
+Start Time:   Fri, 27 May 2022 12:32:34 -0500
+
+Labels:       app=kubernetes-bootcamp
+              pod-template-hash=d9b4bdd78
+
+Annotations:  <none>
+
+Status:       Running
+
+IP:           10.1.0.73    < - - - this pod does in fact have an IP address ! 
+
+IPs:
+
+  IP:           10.1.0.73
+
+Controlled By:  ReplicaSet/kubernetes-bootcamp-d9b4bdd78
+
+Containers:
+  kubernetes-bootcamp:
+    Container ID:   docker://0ea257e719d2749970bedf250910cd0cbcc289118f04edd992c9d13403aadf18
+    Image:          gcr.io/google-samples/kubernetes-bootcamp:v1
+    Image ID:       docker-pullable://gcr.io/google-samples/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Fri, 27 May 2022 12:32:44 -0500
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-bfbx2 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-bfbx2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  7m     default-scheduler  Successfully assigned default/kubernetes-bootcamp-d9b4bdd78-s89xj to docker-desktop
+  Normal  Pulling    7m     kubelet            Pulling image "gcr.io/google-samples/kubernetes-bootcamp:v1"
+  Normal  Pulled     6m51s  kubelet            Successfully pulled image "gcr.io/google-samples/kubernetes-bootcamp:v1" in 8.731381156s
+  Normal  Created    6m51s  kubelet            Created container kubernetes-bootcamp
+  Normal  Started    6m51s  kubelet            Started container kubernetes-bootcamp
+
+
+
+  all of this did in fact create a container 
+
+
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl describe deployments
+Name:                   kubernetes-bootcamp
+Namespace:              default
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+Labels:                 app=kubernetes-bootcamp
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=kubernetes-bootcamp
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  8m28s  deployment-controller  Scaled up replica set kubernetes-bootcamp-d9b4bdd78 to 1
+
+
+
+
+
+
+View our app
+
+Pods that are running inside Kubernetes are running on a private, isolated network. 
+
+By default they are visible from other pods and services within the same kubernetes cluster, 
+but not outside that network. 
+
+When we use kubectl, we're interacting through an API endpoint to communicate with our application.
+
+We will cover other options on how to expose your application outside the kubernetes cluster in Module 4.
+
+The kubectl command can create a proxy that will forward communications into the cluster-wide, private network. 
+
+The proxy can be terminated by pressing control-C and won't show any output while its running.
+
+We will open a second terminal window to run the proxy.
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   43h
+
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get services -n kube-system
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   43h
+
+
+
+
+
+(base) PS C:\Windows\system32>  kubectl get pods -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
+kubernetes-bootcamp-d9b4bdd78-s89xj   1/1     Running   0          11m   10.1.0.73   docker-desktop   <none>           <none>
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployments.v1.apps -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1"
+                },
+                "creationTimestamp": "2022-05-27T17:32:34Z",
+                "generation": 1,
+                "labels": {
+                    "app": "kubernetes-bootcamp"
+                },
+                "name": "kubernetes-bootcamp",
+                "namespace": "default",
+                "resourceVersion": "36768",
+                "uid": "c7acdf0b-1e60-460b-b566-2884af4918e9"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "kubernetes-bootcamp"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "kubernetes-bootcamp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "gcr.io/google-samples/kubernetes-bootcamp:v1",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "kubernetes-bootcamp",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-05-27T17:32:46Z",
+                        "lastUpdateTime": "2022-05-27T17:32:46Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2022-05-27T17:32:34Z",
+                        "lastUpdateTime": "2022-05-27T17:32:46Z",
+                        "message": "ReplicaSet \"kubernetes-bootcamp-d9b4bdd78\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+
+
+
+
+
+View our app
+
+Pods that are running inside Kubernetes are running on a private, isolated network.
+
+By default they are visible from other pods and services within the same kubernetes cluster, but not outside that network. 
+
+When we use kubectl, we're interacting through an API endpoint to communicate with our application.
+
+We will cover other options on how to expose your application outside the kubernetes cluster in Module 4.
+
+The kubectl command can create a proxy that will forward communications into the cluster-wide, private network. The proxy can be terminated by pressing control-C and won't show any output while its running.
+
+We will open a second terminal window to run the proxy.
+
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl proxy
+Starting to serve on 127.0.0.1:8001
+
+
+
+We now have a connection between our host (the online terminal) and the Kubernetes cluster. 
+
+The proxy enables direct access to the API from these terminals.
+
+You can see all those APIs hosted through the proxy endpoint. 
+
+For example, we can query the version directly through the API using the curl command:
+
+
+
+
+(base) PS C:\Windows\system32> curl http://localhost:8001/version
+
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : {
+                      "major": "1",
+                      "minor": "24",
+                      "gitVersion": "v1.24.0",
+                      "gitCommit": "4ce5a8954017644c5420bae81d72b09b735c21f0",
+                      "gitTreeState": "clean",
+                      "buildDate": "2022-05-03T13:38:19Z",
+                      "goVersion"...
+RawContent        : HTTP/1.1 200 OK
+                    Audit-Id: 7c50b6d0-d28a-4d80-a296-a0ebd4e9212f
+                    X-Kubernetes-Pf-Flowschema-Uid: c87a5348-a667-4d38-8292-600904d3ad2d
+                    X-Kubernetes-Pf-Prioritylevel-Uid: 001b69a2-0c2e-491d-8389-7fd4b1...
+Forms             : {}
+Headers           : {[Audit-Id, 7c50b6d0-d28a-4d80-a296-a0ebd4e9212f], [X-Kubernetes-Pf-Flowschema-Uid, c87a5348-a667-4d38-8292-600904d3ad2d], [X-Kubernetes-Pf-Prioritylevel-Uid, 001b69a2-0c2e-491d-8389-7fd4b1ad7da6], [Content-Length,
+                    263]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 263
+
+
+
+
+
+
+
+The API server will automatically create an endpoint for each pod, based on the pod name, that is also accessible through the proxy.
+
+First we need to get the Pod name, and we'll store in the environment variable POD_NAME:
+
+
+
+fancy:  get pod name, and then api direct to it 
+
+
+
+(base) PS C:\Windows\system32> kubectl get pods
+NAME                                  READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-d9b4bdd78-s89xj   1/1     Running   0          18m
+
+
+
+
+
+curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/
+
+curl http://localhost:8001/api/v1/namespaces/default/pods/kubernetes-bootcamp-d9b4bdd78-s89xj/
+
+
+
+
+
+> curl http://localhost:8001/api/v1/namespaces/default/pods/kubernetes-bootcamp-d9b4bdd78-s89xj/
+
+
+StatusCode        : 200
+
+StatusDescription : OK
+
+Content           : {
+                      "kind": "Pod",
+                      "apiVersion": "v1",
+                      "metadata": {
+                        "name": "kubernetes-bootcamp-d9b4bdd78-s89xj",
+                        "generateName": "kubernetes-bootcamp-d9b4bdd78-",
+                        "namespace": "default",
+                        "uid":...
+RawContent        : HTTP/1.1 200 OK
+                    Audit-Id: 84db2f78-0d5b-4ec1-a425-7471993f0ec8
+                    X-Kubernetes-Pf-Flowschema-Uid: c87a5348-a667-4d38-8292-600904d3ad2d
+                    X-Kubernetes-Pf-Prioritylevel-Uid: 001b69a2-0c2e-491d-8389-7fd4b1...
+Forms             : {}
+Headers           : {[Audit-Id, 84db2f78-0d5b-4ec1-a425-7471993f0ec8], [X-Kubernetes-Pf-Flowschema-Uid, c87a5348-a667-4d38-8292-600904d3ad2d], [X-Kubernetes-Pf-Prioritylevel-Uid, 001b69a2-0c2e-491d-8389-7fd4b1ad7da6],
+                    [Transfer-Encoding, chunked]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 7042
+
+
+
+
+In order for the new deployment to be accessible without using the Proxy, 
+a Service is required which will be explained in the next modules.
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+

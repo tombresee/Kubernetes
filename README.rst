@@ -152,6 +152,8 @@ Links
 
 * https://collabnix.github.io/kubelabs/   ******
 
+* https://www.vmware.com/topics/glossary/content/kubernetes-cluster.html#:~:text=A%20Kubernetes%20cluster%20is%20a,and%20flexible%20than%20virtual%20machines.
+
 * https://e2286dbf385641eb8b0777c1b208cc2d-167772178-30000-cykoria04.environments.katacoda.com/#/cronjob?namespace=default
 
 * https://collabnix.github.io/kubelabs/Kubernetes_Intro_slides-1/Kubernetes_Intro_slides-1.html
@@ -183,6 +185,9 @@ Links
 * https://collabnix.com/kubectl-cheatsheet/
 
 * https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/
+
+* https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/application/nginx-with-request.yaml
+
 
 |
 |

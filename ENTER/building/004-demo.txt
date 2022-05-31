@@ -1,0 +1,345 @@
+
+
+
+Running Multiple Instances of Your App
+Objectives
+Scale an app using kubectl.
+Scaling an application
+In the previous modules we created a Deployment, and then exposed it publicly via a Service. The Deployment created only one Pod for running our application. When traffic increases, we will need to scale the application to keep up with user demand.
+
+
+Scaling is accomplished by changing the number of replicas in a Deployment
+
+
+
+
+Scaling out a Deployment will ensure new Pods are created and scheduled to Nodes with available resources. 
+
+Scaling will increase the number of Pods to the new desired state. 
+
+Kubernetes also supports autoscaling of Pods, but it is outside of the scope of this tutorial. 
+
+Scaling to zero is also possible, and it will terminate all Pods of the specified Deployment.
+
+Running multiple instances of an application will require a way to distribute the traffic to all of them. 
+
+Services have an integrated load-balancer that will distribute network traffic to all Pods of an exposed Deployment. 
+
+Services will monitor continuously the running Pods using endpoints, to ensure the traffic is sent only to available Pods.
+
+Scaling is accomplished by changing the number of replicas in a Deployment.
+
+Once you have multiple instances of an Application running, you would be able to do Rolling updates without downtime. 
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployments
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   1/1     1            1           158m
+
+
+
+
+
+
+
+
+> kubectl get deployments
+
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   1/1     1            1           158m
+
+
+
+NAME lists the names of the Deployments in the cluster.
+
+READY shows the ratio of CURRENT/DESIRED replicas
+
+UP-TO-DATE displays the number of replicas that have been updated to achieve the desired state.
+
+AVAILABLE displays how many replicas of the application are available to your users.
+
+AGE displays the amount of time that the application has been running.
+
+
+
+
+
+
+
+
+> kubectl describe deployments
+
+Name:                   kubernetes-bootcamp
+
+Namespace:              default
+
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+
+Labels:                 app=kubernetes-bootcamp  
+
+Annotations:            deployment.kubernetes.io/revision: 1          
+
+Selector:               app=kubernetes-bootcamp                 why in here ? 
+
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+
+StrategyType:           RollingUpdate
+
+MinReadySeconds:        0
+
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+
+OldReplicaSets:  <none>
+
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (1/1 replicas created)
+
+Events:          <none>
+
+
+
+
+
+
+To see the ReplicaSet created by the Deployment, run kubectl get rs
+
+
+(base) PS C:\Windows\system32> kubectl get rs
+NAME                            DESIRED   CURRENT   READY   AGE
+kubernetes-bootcamp-d9b4bdd78   1         1         1       160m
+
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl describe rs
+
+Name:           kubernetes-bootcamp-d9b4bdd78
+
+Namespace:      default
+
+Selector:       app=kubernetes-bootcamp,    pod-template-hash=d9b4bdd78
+
+Labels:         app=kubernetes-bootcamp
+                pod-template-hash=d9b4bdd78
+
+Annotations:    deployment.kubernetes.io/desired-replicas: 1
+                deployment.kubernetes.io/max-replicas: 2
+                deployment.kubernetes.io/revision: 1
+
+Controlled By:  Deployment/kubernetes-bootcamp                           so the replicaset is controlled by the deployment 
+
+Replicas:       1 current / 1 desired
+
+Pods Status:    1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+           pod-template-hash=d9b4bdd78
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Events:           <none>
+
+
+
+
+
+Notice that the name of the ReplicaSet is always formatted as [DEPLOYMENT-NAME]-[RANDOM-STRING]. 
+
+The random string is randomly generated and uses the pod-template-hash as a seed.
+
+
+
+Two important columns of this command are:
+
+DESIRED displays the desired number of replicas of the application, which you define when you create the Deployment. This is the desired state.
+
+CURRENT displays how many replicas are currently running.
+
+
+
+
+
+Next, let’s scale the Deployment to 4 replicas. 
+
+We’ll use the kubectl scale command, followed by the deployment type, name and desired number of instances:
+
+kubectl scale deployments/kubernetes-bootcamp --replicas=4
+
+   scale the deployment with a replica count of 4
+
+
+(base) PS C:\Windows\system32> kubectl scale deployments/kubernetes-bootcamp --replicas=4
+deployment.apps/kubernetes-bootcamp scaled
+
+
+
+(base) PS C:\Windows\system32> kubectl get rs
+NAME                            DESIRED   CURRENT   READY   AGE
+kubernetes-bootcamp-d9b4bdd78   4         4         4       163m
+
+
+
+
+(base) PS C:\Windows\system32> kubectl describe rs
+Name:           kubernetes-bootcamp-d9b4bdd78
+Namespace:      default
+Selector:       app=kubernetes-bootcamp,pod-template-hash=d9b4bdd78
+Labels:         app=kubernetes-bootcamp
+                pod-template-hash=d9b4bdd78
+Annotations:    deployment.kubernetes.io/desired-replicas: 4
+                deployment.kubernetes.io/max-replicas: 5
+                deployment.kubernetes.io/revision: 1
+Controlled By:  Deployment/kubernetes-bootcamp
+
+
+Replicas:       4 current / 4 desired
+Pods Status:    4 Running / 0 Waiting / 0 Succeeded / 0 Failed
+
+
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+           pod-template-hash=d9b4bdd78
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Events:
+  Type    Reason            Age   From                   Message
+  ----    ------            ----  ----                   -------
+  Normal  SuccessfulCreate  19s   replicaset-controller  Created pod: kubernetes-bootcamp-d9b4bdd78-fj6mr
+  Normal  SuccessfulCreate  19s   replicaset-controller  Created pod: kubernetes-bootcamp-d9b4bdd78-6pmvc
+  Normal  SuccessfulCreate  19s   replicaset-controller  Created pod: kubernetes-bootcamp-d9b4bdd78-9nbcj
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get deployments
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   4/4     4            4           164m
+
+
+
+
+The change was applied, and we have 4 instances of the application available.
+
+  Next, let’s check if the number of Pods changed:
+
+
+(base) PS C:\Windows\system32> kubectl describe deployments/kubernetes-bootcamp
+Name:                   kubernetes-bootcamp
+Namespace:              default
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+Labels:                 app=kubernetes-bootcamp
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=kubernetes-bootcamp
+Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (4/4 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  2m13s  deployment-controller  Scaled up replica set kubernetes-bootcamp-d9b4bdd78 to 4
+
+
+
+
+
+(base) PS C:\Windows\system32> kubectl get pods
+NAME                                  READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-d9b4bdd78-6pmvc   1/1     Running   0          2m30s
+kubernetes-bootcamp-d9b4bdd78-9nbcj   1/1     Running   0          2m30s
+kubernetes-bootcamp-d9b4bdd78-fj6mr   1/1     Running   0          2m30s
+kubernetes-bootcamp-d9b4bdd78-s89xj   1/1     Running   0          165m
+
+
+
+There are 4 Pods now, with different IP addresses. The change was registered in the Deployment events log. To check that, use the describe command:
+
+
+You can also view in the output of this command that there are 4 replicas now.
+
+
+(base) PS C:\Windows\system32> kubectl describe deployments/kubernetes-bootcamp
+Name:                   kubernetes-bootcamp
+Namespace:              default
+CreationTimestamp:      Fri, 27 May 2022 12:32:34 -0500
+Labels:                 app=kubernetes-bootcamp
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=kubernetes-bootcamp
+Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=kubernetes-bootcamp
+  Containers:
+   kubernetes-bootcamp:
+    Image:        gcr.io/google-samples/kubernetes-bootcamp:v1
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   kubernetes-bootcamp-d9b4bdd78 (4/4 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  3m4s  deployment-controller  Scaled up replica set kubernetes-bootcamp-d9b4bdd78 to 4   < - - - - new ! 
+
+
+  
+
