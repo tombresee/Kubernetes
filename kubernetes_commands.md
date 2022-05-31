@@ -9,6 +9,7 @@ List of general purpose commands for Kubernetes management:
 
 - [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 - [PODS](#pods)
+- [Nodes](#nodes)
 - [Create Deployments](#create-deployments)
 - [Scaling PODs](#scaling-pods)
 - [POD Upgrade / History](#pod-upgrade-and-history)
@@ -70,7 +71,20 @@ $ kubectl get pods --all-namespaces
 $ kubectl get pod TOM -o wide
 $ kubectl get pod TOM -o yaml
 $ kubectl describe pod TOM
+$ kubectl get pods | grep Pending   # Running is goal
+$ kubectl delete pod pod-name
 ```
+
+<br>
+
+
+## Nodes
+
+
+```
+$ kubectl get nodes
+```
+
 
 <br>
 
@@ -93,6 +107,8 @@ $ kubectl run TOM --image=TOM --record
 
 ```bash
 $ kubectl scale deployment/POD_NAME --replicas=N
+$ kubectl scale deployment coredns -n kube-system --replicas=1
+
 ```
 
 
@@ -191,6 +207,7 @@ Check DNS for pod nginx (assuming a busybox POD/container is running)
 
 ```
 $ kubectl exec -ti busybox -- nslookup nginx
+$ kubectl exec -it $(kubectl get pods | awk '/role-manager/{print $1;exit}') -c role-manager --/opt/isp/os/rolemgr/bin/rmgrctl statusAll
 ```
 
 > Note: kube-proxy running in the worker nodes manage services and set iptables rules to direct traffic.
@@ -249,6 +266,7 @@ NodeSelector based policy:
 
 ```
 $ kubectl label node minikube foo=bar
+$ kubectl label node VM mdm=true
 ```
 
 Node Binding through API Server:
