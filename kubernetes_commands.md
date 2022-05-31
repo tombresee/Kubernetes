@@ -15,16 +15,17 @@ List of general purpose commands for Kubernetes management:
 
 - [all](#all)
 - [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
-- [PODS](#pods)
+- [Pods](#pods)
 - [Nodes](#nodes)
 - [Create](#create)
 - [Deployments](#deployments)
 - [Labels](#labels)
 - [Scaling PODs](#scaling-pods)
-- [POD Upgrade / History](#pod-upgrade-and-history)
+- [Pod Upgrade / History](#pod-upgrade-and-history)
 - [Services](#services)
 - [Volumes](#volumes)
 - [Secrets](#secrets)
+- [Port Forwarding](#portforwarding)
 - [ConfigMaps](#configmaps)
 - [Ingress](#ingress)
 - [Horizontal Pod Autoscalers](#horizontal-pod-autoscalers)
@@ -243,6 +244,14 @@ $ kubectl get secrets mysql -o yaml
 <br>
 
 
+## Port Forwarding 
+```
+```
+
+
+<br>
+
+
 
 ## ConfigMaps
 
@@ -357,8 +366,13 @@ $ kubectl taint node master foo=bar:NoSchedule
 
 ```
 $ kubectl describe
+
 $ kubectl logs
+$ kubectl logs <pod-name>
+
 $ kubectl exec
+$ kubectl exec -it <pod-name> -- bash
+
 $ kubectl get nodes --show-labels
 $ kubectl get events
 ```
