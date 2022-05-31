@@ -17,7 +17,8 @@ List of general purpose commands for Kubernetes management:
 - [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 - [PODS](#pods)
 - [Nodes](#nodes)
-- [Create Deployments](#create-deployments)
+- [Create](#create)
+- [Deployments](#deployments)
 - [Scaling PODs](#scaling-pods)
 - [POD Upgrade / History](#pod-upgrade-and-history)
 - [Services](#services)
@@ -47,11 +48,12 @@ List of general purpose commands for Kubernetes management:
 
 ```
 $ kubectl get all
+$ kubectl get all -A 
+$ kubectl get pods,services, rs
 ```
 
 
 <br>
-
 
 
 
@@ -90,13 +92,15 @@ Keyboard hints:
 
 ```
 $ kubectl get pods
-$ kubectl get pods --all-namespaces
+$ kubectl get pods --all-namespaces  # -A
 $ kubectl get pod TOM -o wide
 $ kubectl get pod TOM -o yaml
 $ kubectl describe pod TOM
 $ kubectl get pods | grep Pending   # Running is goal
 $ kubectl delete pod pod-name
 $ kubectl get pods -l app=nsp-role-manager -o jsonpath='{.items[0].metadata.name}')
+$ kubectl get pods my-pod -o jsonpath --template={.status.podIP}
+$ kubectl explain pods
 ```
 
 <br>
@@ -115,6 +119,15 @@ $ kubectl describe nodes kube1
 $ kubectl drain node_name --ignore-daemonsets --delete-local-data
 $ kubectl delete node node_name # node removed from the cluster 
 ```
+
+
+
+## Create
+
+```
+stuff
+```
+
 
 
 <br>
