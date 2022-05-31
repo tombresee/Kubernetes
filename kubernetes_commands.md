@@ -28,7 +28,7 @@ List of general purpose commands for Kubernetes management:
 - [Port Forwarding](#Port-Forwarding)
 - [ConfigMaps](#configmaps)
 - [Ingress](#ingress)
-- [Horizontal Pod Autoscalers](#horizontal-pod-autoscalers)
+- [Horizontal Pod Autoscalers](#Horizontal-Pod-Autoscalers)
 - [Scheduler](#scheduler)
 - [Taints and Tolerations](#tains-and-tolerations)
 - [Troubleshooting](#troubleshooting)
