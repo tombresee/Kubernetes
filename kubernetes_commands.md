@@ -26,6 +26,9 @@ List of general purpose commands for Kubernetes management:
 - [Security Contexts](#security_contexts)
 - [Pod Security Policies](#pod_security_policies)
 - [Network Policies](#network_policies)
+- [Jobs](#jobs)
+
+
 
 
 <br>
@@ -84,7 +87,15 @@ $ kubectl get pods -l app=nsp-role-manager -o jsonpath='{.items[0].metadata.name
 
 ```
 $ kubectl get nodes
-$ kubectl get nodes -o wide # VMs
+$ kubectl get nodes -o wide  # VMs
+# remove node from cluster
+# stop all pods that are running on a node: 
+$ kubectl drain node_name --ignore-daemonsets --delete-local-data
+$ kubectl delete node node_name # node removed from the cluster 
+
+
+
+
 ```
 
 
@@ -111,7 +122,6 @@ $ kubectl get deployments
 ```bash
 $ kubectl scale deployment/POD_NAME --replicas=N
 $ kubectl scale deployment coredns -n kube-system --replicas=1
-
 # stop the pod
 $ kubectl scale deployment pod --replicas=0
 # start the pod
@@ -371,3 +381,23 @@ $ kubectl annotate ns <namespace> "net.beta.kubernetes.io/network-policy={\"ingr
 More about Network Policies as a resource: 
 
 https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/
+
+
+<br>
+
+
+
+## Jobs
+
+
+Commands
+```
+$ kubectl create job etcd --from cronjob/isp-etcd-backup
+$ kubectl create job neo4j --from cronjob/ispos-neo4j-backup 
+$ kubectl create job postgresql --from cronjob/ispos-postgresql-backup
+```
+
+
+<br>
+<br>
+<br>
