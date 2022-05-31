@@ -4,12 +4,10 @@
 
 
 
-Helper setup to edit .yaml files with Vim:
-
-- [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 
 List of general purpose commands for Kubernetes management:
 
+- [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 - [PODS](#pods)
 - [Create Deployments](#create-deployments)
 - [Scaling PODs](#scaling-pods)
