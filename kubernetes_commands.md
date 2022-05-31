@@ -305,10 +305,12 @@ Spec for ingress:
 - [backend](https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx)
  
 
+
 <br>
 
 
-## Horizontal Pod Autoscaler
+
+## Horizontal Pod Autoscalers
 
 When heapster runs:
 
@@ -316,6 +318,7 @@ When heapster runs:
 $ kubectl get hpa
 $ kubectl autoscale --help
 ```
+
 
 
 <br>
