@@ -125,6 +125,8 @@ List services
 
 ```
 $ kubectl get services
+$ kubectl get services --all-namespaces
+
 ```
 
 Expose PODs as services (creates endpoints)
@@ -143,8 +145,8 @@ $ kubectl expose deployment/TOM --port=2001 --type=NodePort
 Lits Persistent Volumes and Persistent Volumes Claims:
 
 ```
-$ kubectl get pv
-$ kubectl get pvc
+$ kubectl get pv --all-namespaces
+$ kubectl get pvc --all-namespaces
 ```
 
 
