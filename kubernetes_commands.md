@@ -453,8 +453,10 @@ Base
 
 Deploy Commands:
   rollout       Manage the rollout of a resource
-  scale         Set a new size for a deployment, replica set, or replication controller
-  autoscale     Auto-scale a deployment, replica set, stateful set, or replication controller
+  scale         Set a new size for a deployment, replica set, 
+                or replication controller
+  autoscale     Auto-scale a deployment, replica set, 
+                stateful set, or replication controller
 
 Cluster Management Commands:
   certificate   Modify certificate resources.
@@ -487,12 +489,14 @@ Advanced Commands:
 Settings Commands:
   label         Update the labels on a resource
   annotate      Update the annotations on a resource
-  completion    Output shell completion code for the specified shell (bash, zsh or fish)
+  completion    Output shell completion code for the 
+                specified shell (bash, zsh or fish)
 
 Other Commands:
   alpha         Commands for features in alpha
   api-resources Print the supported API resources on the server
-  api-versions  Print the supported API versions on the server, in the form of "group/version"
+  api-versions  Print the supported API versions on the server, 
+                in the form of "group/version"
   config        Modify kubeconfig files
   plugin        Provides utilities for interacting with plugins
   version       Print the client and server version information
