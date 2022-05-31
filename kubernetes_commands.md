@@ -65,7 +65,7 @@ $ kubectl describe pod TOM
 Create single deployment
 
 ```
-$ kubectl run monkey --image=monkey --record
+$ kubectl run TOM --image=TOM --record
 ```
 
 ## Scaling PODs
@@ -99,7 +99,7 @@ $ kubectl get services
 Expose PODs as services (creates endpoints)
 
 ```
-$ kubectl expose deployment/monkey --port=2001 --type=NodePort
+$ kubectl expose deployment/TOM --port=2001 --type=NodePort
 ```
 
 ## Volumes
