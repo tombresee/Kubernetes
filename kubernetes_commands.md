@@ -27,6 +27,10 @@ List of general purpose commands for Kubernetes management:
 - [Pod Security Policies](#pod_security_policies)
 - [Network Policies](#network_policies)
 - [Jobs](#jobs)
+- [etcd](#etcd)
+
+
+
 
 
 
@@ -395,7 +399,23 @@ Commands
 $ kubectl create job etcd --from cronjob/isp-etcd-backup
 $ kubectl create job neo4j --from cronjob/ispos-neo4j-backup 
 $ kubectl create job postgresql --from cronjob/ispos-postgresql-backup
+# if you use local storage, enter to copy the backup files to a local folder
+$ kubectl cp $(kubectl get pods | awk '/isp-backup-storage/ {print $1;exit}'):tmp/backups/isp-etcd path/isp-etcd
+$ kubectl delete jobs.batch job
 ```
+
+
+<br>
+
+
+
+## etcd
+
+
+```
+$ systemctl stop etcd
+```
+
 
 
 <br>
