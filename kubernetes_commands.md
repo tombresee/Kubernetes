@@ -96,10 +96,6 @@ $ kubectl get nodes -o wide  # VMs
 # stop all pods that are running on a node: 
 $ kubectl drain node_name --ignore-daemonsets --delete-local-data
 $ kubectl delete node node_name # node removed from the cluster 
-
-
-
-
 ```
 
 
