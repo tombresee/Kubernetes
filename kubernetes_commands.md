@@ -73,6 +73,7 @@ $ kubectl get pod TOM -o yaml
 $ kubectl describe pod TOM
 $ kubectl get pods | grep Pending   # Running is goal
 $ kubectl delete pod pod-name
+$ kubectl get pods -l app=nsp-role-manager -o jsonpath='{.items[0].metadata.name}')
 ```
 
 <br>
@@ -83,6 +84,7 @@ $ kubectl delete pod pod-name
 
 ```
 $ kubectl get nodes
+$ kubectl get nodes -o wide # VMs
 ```
 
 
@@ -96,6 +98,7 @@ Create single deployment
 
 ```
 $ kubectl run TOM --image=TOM --record
+$ kubectl get deployments
 ```
 
 
@@ -109,6 +112,10 @@ $ kubectl run TOM --image=TOM --record
 $ kubectl scale deployment/POD_NAME --replicas=N
 $ kubectl scale deployment coredns -n kube-system --replicas=1
 
+# stop the pod
+$ kubectl scale deployment pod --replicas=0
+# start the pod
+$ kubectl scale deployment pod --replicas=1
 ```
 
 
