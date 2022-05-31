@@ -7,6 +7,7 @@
 
 List of general purpose commands for Kubernetes management:
 
+- [all](#all)
 - [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 - [PODS](#pods)
 - [Nodes](#nodes)
@@ -34,8 +35,18 @@ List of general purpose commands for Kubernetes management:
 
 
 
+<br>
+
+## all
+
+
+```
+$ kubectl get all
+```
+
 
 <br>
+
 
 
 
@@ -159,7 +170,6 @@ List services
 ```
 $ kubectl get services
 $ kubectl get services --all-namespaces
-
 ```
 
 Expose PODs as services (creates endpoints)
