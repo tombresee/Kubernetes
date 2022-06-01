@@ -1005,14 +1005,21 @@ Events:
 
 
 
+
 <br>
 
 ## links
 
 * https://kubernetes.io/docs/concepts/architecture/
 * https://kubernetes.io/docs/concepts/architecture/nodes/#addresses
+* https://learning.oreilly.com/library/view/certified-kubernetes-application/9781492083726/
+* https://www.linkedin.com/learning/certified-kubernetes-administrator-cka-cert-prep-the-basics
+* https://killer.sh/
+* https://kodekloud.com/p/certified-kubernetes-administrator-with-practice-tests
+* https://www.study4exam.com/linux-foundation/info/cka
 * Left off here:
   * https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
+
 
 
 
