@@ -1000,6 +1000,8 @@ Events:
   Normal  NodeHasSufficientMemory  33m (x8 over 33m)  kubelet     Node docker-desktop status is now: NodeHasSufficientMemory
   Normal  NodeHasNoDiskPressure    33m (x7 over 33m)  kubelet     Node docker-desktop status is now: NodeHasNoDiskPressure
   Normal  NodeHasSufficientPID     33m (x7 over 33m)  kubelet     Node docker-desktop status is now: NodeHasSufficientPID
+```
+
 
 
 
