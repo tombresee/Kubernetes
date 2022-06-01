@@ -645,10 +645,59 @@ spec:
 
 ```
 kubectl apply -f https://k8s.io/examples/pods/simple-pod.yaml
+
+(base) PS C:\Windows\system32> kubectl describe pods nginx
+Name:         nginx
+Namespace:    default
+Priority:     0
+Node:         docker-desktop/192.168.65.4
+Start Time:   Wed, 01 Jun 2022 11:37:10 -0500
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.1.0.111
+IPs:
+  IP:  10.1.0.111
+Containers:
+  nginx:
+    Container ID:   docker://a06bb06219edc8863966bb35b883f517eb7891fc10c646e4db2fae54a562a814
+    Image:          nginx:1.14.2
+    Image ID:       docker-pullable://nginx@sha256:f7988fb6c02e0ce69257d9bd9cf37ae20a60f1df7563c3a2a6abe24160306b8d
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 01 Jun 2022 11:37:19 -0500
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4hdzn (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-4hdzn:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  3m44s  default-scheduler  Successfully assigned default/nginx to docker-desktop
+  Normal  Pulling    3m43s  kubelet            Pulling image "nginx:1.14.2"
+  Normal  Pulled     3m35s  kubelet            Successfully pulled image "nginx:1.14.2" in 7.802192988s
+  Normal  Created    3m35s  kubelet            Created container nginx
+  Normal  Started    3m35s  kubelet            Started container nginx
 ```
-
-
-
 
 
 
