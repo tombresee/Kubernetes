@@ -1,5 +1,4 @@
 
-
 <br>
 
 # Kubernetes Commands
@@ -39,12 +38,9 @@ List of general purpose commands for Kubernetes management:
 
 
 
-
-
-
 <br>
 
-## all
+## Start
 
 
 ```
@@ -98,12 +94,18 @@ $ kubectl apply -f kuard-pod.yaml
 ```
 # listing out Kubernetes Worker Nodes
 $ kubectl get nodes
-$ kubectl get nodes -o wide  # VMs
+$ kubectl get nodes -o wide   # VMs
+
 $ kubectl describe nodes kube1
-# remove node from cluster
-# stop all pods that are running on a node: 
+
+# remove node from cluster / stop all pods that are running on a node 
 $ kubectl drain node_name --ignore-daemonsets --delete-local-data
 $ kubectl delete node node_name # node removed from the cluster 
+
+# manually relabel a node 
+$ kubectl label node TOM cool=true
+$ kubectl cordon node_name
+$ kubectl uncordon *node_name*
 ```
 
 
