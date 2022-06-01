@@ -96,14 +96,21 @@ Keyboard hints:
 ```
 $ kubectl get pods
 $ kubectl get pods --all-namespaces  # -A
-$ kubectl get pod TOM -o wide
-$ kubectl get pod TOM -o yaml
-$ kubectl describe pod TOM
+$ kubectl get pod TOM -o wide (or yaml, json)
+$ kubectl get pods --show-labels -A
 $ kubectl get pods | grep Pending   # Running is goal
-$ kubectl delete pod pod-name
 $ kubectl get pods -l app=nsp-role-manager -o jsonpath='{.items[0].metadata.name}')
 $ kubectl get pods my-pod -o jsonpath --template={.status.podIP}
+
+$ kubectl describe pod TOM
+$ kubectl describe pods kuard
+
+$ kubectl delete pod pod-name
+$ kubectl delete pods/kuard
+
 $ kubectl explain pods
+$ kubectl run kuard --generator=run-pod/v1 --image=gcr.io/kuar-demo/kuard-amd64:blue
+$ kubectl apply -f kuard-pod.yaml
 ```
 
 <br>
@@ -156,6 +163,7 @@ $ kubectl run TOM --image=TOM --record
 ```
 $ kubectl label pods bar color=red
 $ kubectl label pods bar color- # remove label 
+$ kubectl label deployments alpaca-test "canary=true"  # modify labels 
 ```
 
 
@@ -250,6 +258,7 @@ $ kubectl get secrets mysql -o yaml
 
 ```
 $ kubectl port-forward <pod-name> 8080:80
+$ kubectl port-forward kuard 8080:8080  # access the pod 
 ```
 
 
@@ -379,6 +388,7 @@ $ kubectl logs <pod-name>
 
 $ kubectl exec
 $ kubectl exec -it <pod-name> -- bash
+$ kubectl exec -it kuard -- ash  # drop it for non interactive 
 
 $ kubectl get nodes --show-labels
 $ kubectl get nodes --show-labels -A
