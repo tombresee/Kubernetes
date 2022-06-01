@@ -14,7 +14,6 @@
 List of general purpose commands for Kubernetes management:
 
 - [all](#all)
-- [VIM Setup for Yaml files](#vim-setup-for-yaml-files)
 - [Pods](#pods)
 - [Nodes](#nodes)
 - [Create](#create)
@@ -42,6 +41,18 @@ List of general purpose commands for Kubernetes management:
 
 
 kubectl get replicasets --namespace kube-system
+kubectl cluster-info
+(base) PS C:\Windows\system32> kubectl get pods -n kube-system
+NAME                                     READY   STATUS    RESTARTS      AGE
+coredns-6d4b75cb6d-kvwzm                 1/1     Running   0             78m
+coredns-6d4b75cb6d-qzwwx                 1/1     Running   0             78m
+etcd-docker-desktop                      1/1     Running   17            78m
+kube-apiserver-docker-desktop            1/1     Running   17            79m
+kube-controller-manager-docker-desktop   1/1     Running   17            79m
+kube-proxy-mqhps                         1/1     Running   0             78m
+kube-scheduler-docker-desktop            1/1     Running   17            78m
+storage-provisioner                      1/1     Running   0             78m
+vpnkit-controller                        1/1     Running   6 (16s ago)   78m
 
 
 
@@ -49,8 +60,22 @@ kubectl get replicasets --namespace kube-system
 
 ## all
 
+https://learning.oreilly.com/library/view/certified-kubernetes-application/9781492083726/
+
+https://www.linkedin.com/learning/certified-kubernetes-administrator-cka-cert-prep-the-basics
+
+https://killer.sh/
+
+https://kodekloud.com/p/certified-kubernetes-administrator-with-practice-tests
+
+https://www.study4exam.com/linux-foundation/info/cka
+
 
 ```
+k api-resources
+$ kubectl create --help
+
+$ New-Alias -Name k -Value kubectl
 $ kubectl completion powershell | Out-String | Invoke-Expression
 $ kubectl get all
 $ kubectl get all -A 
@@ -58,40 +83,9 @@ $ kubectl get pods,services, rs
 ```
 
 
-<br>
-
-
-
-## VIM Setup for Yaml files
-
-Put the following lines in ~/.vimrc:
-
-```
-" Yaml file handling
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-filetype plugin indent on
-autocmd FileType yaml setl indentkeys-=<:>
-
-" Copy paste with ctr+c, ctr+v, etc
-:behave mswin
-:set clipboard=unnamedplus
-:smap <Del> <C-g>"_d
-:smap <C-c> <C-g>y
-:smap <C-x> <C-g>x
-:imap <C-v> <Esc>pi
-:smap <C-v> <C-g>p
-:smap <Tab> <C-g>1> 
-:smap <S-Tab> <C-g>1<
-```
-
-Keyboard hints:
-
-- ctrl + f: auto indent line (requires INSERT mode)
 
 
 <br>
-
-
 
 ## PODS
 
