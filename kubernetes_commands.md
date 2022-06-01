@@ -2,13 +2,9 @@
 
 <br>
 
-
 # Kubernetes Commands
 
-
 <br>
-
-
 
 
 List of general purpose commands for Kubernetes management:
@@ -18,6 +14,7 @@ List of general purpose commands for Kubernetes management:
 - [Nodes](#nodes)
 - [Create](#create)
 - [Deployments](#deployments)
+- [ReplicaSets](#replicaset)
 - [Labels](#labels)
 - [Scaling PODs](#scaling-pods)
 - [Pod Upgrade / History](#pod-upgrade-and-history)
@@ -40,19 +37,8 @@ List of general purpose commands for Kubernetes management:
 - [kubectl --help](#kubectl--help)
 
 
-kubectl get replicasets --namespace kube-system
-kubectl cluster-info
-(base) PS C:\Windows\system32> kubectl get pods -n kube-system
-NAME                                     READY   STATUS    RESTARTS      AGE
-coredns-6d4b75cb6d-kvwzm                 1/1     Running   0             78m
-coredns-6d4b75cb6d-qzwwx                 1/1     Running   0             78m
-etcd-docker-desktop                      1/1     Running   17            78m
-kube-apiserver-docker-desktop            1/1     Running   17            79m
-kube-controller-manager-docker-desktop   1/1     Running   17            79m
-kube-proxy-mqhps                         1/1     Running   0             78m
-kube-scheduler-docker-desktop            1/1     Running   17            78m
-storage-provisioner                      1/1     Running   0             78m
-vpnkit-controller                        1/1     Running   6 (16s ago)   78m
+
+
 
 
 
@@ -60,22 +46,14 @@ vpnkit-controller                        1/1     Running   6 (16s ago)   78m
 
 ## all
 
-https://learning.oreilly.com/library/view/certified-kubernetes-application/9781492083726/
-
-https://www.linkedin.com/learning/certified-kubernetes-administrator-cka-cert-prep-the-basics
-
-https://killer.sh/
-
-https://kodekloud.com/p/certified-kubernetes-administrator-with-practice-tests
-
-https://www.study4exam.com/linux-foundation/info/cka
-
 
 ```
+# create alias in powershell for speed 
+$ New-Alias -Name k -Value kubectl
+
 k api-resources
 $ kubectl create --help
-
-$ New-Alias -Name k -Value kubectl
+$ kubectl cluster-info
 $ kubectl completion powershell | Out-String | Invoke-Expression
 $ kubectl get all
 $ kubectl get all -A 
@@ -157,8 +135,20 @@ $ kubectl run TOM --image=TOM --record
 ```
 
 
+
+
 <br>
 
+## Replicasets
+```
+$ kubectl get replicasets --namespace kube-system
+```
+
+
+
+
+
+<br>
 
 ## Labels
 ```
@@ -166,6 +156,8 @@ $ kubectl label pods bar color=red
 $ kubectl label pods bar color- # remove label 
 $ kubectl label deployments alpaca-test "canary=true"  # modify labels 
 ```
+
+
 
 
 <br>
@@ -400,6 +392,7 @@ $ kubectl get events -A
 
 $ kubectl top nodes
 
+$ kubectl get pods -n kube-system  # specific core implementation
 ```
 
 
