@@ -105,7 +105,7 @@ $ kubectl delete node node_name # node removed from the cluster
 # manually relabel a node 
 $ kubectl label node TOM cool=true
 $ kubectl cordon node_name
-$ kubectl uncordon *node_name*
+$ kubectl uncordon node_name
 ```
 
 
@@ -134,6 +134,10 @@ $ kubectl get deployments -A
 $ kubectl describe deployments
 
 $ kubectl run TOM --image=TOM --record
+# how many replicas of each pod are running
+$ kubectl describe deployments.apps dns-autoscaler -n kube-system | grep Replicas
+
+
 ```
 
 
@@ -177,6 +181,7 @@ $ kubectl scale deployment pod --replicas=0
 # start the pod
 $ kubectl scale deployment pod --replicas=1
 $ kubectl scale deployments kuard --replicas=2
+$ kubectl scale deployment coredns -n kube-system --replicas=0 (or 1) 
 ```
 
 
