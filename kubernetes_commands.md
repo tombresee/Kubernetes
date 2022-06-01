@@ -41,6 +41,8 @@ List of general purpose commands for Kubernetes management:
 - [kubectl --help](#kubectl--help)
 
 
+kubectl get replicasets --namespace kube-system
+
 
 
 <br>
@@ -101,9 +103,11 @@ $ kubectl get pods --show-labels -A
 $ kubectl get pods | grep Pending   # Running is goal
 $ kubectl get pods -l app=nsp-role-manager -o jsonpath='{.items[0].metadata.name}')
 $ kubectl get pods my-pod -o jsonpath --template={.status.podIP}
-
+$ kubectl get pods --selector="ver=2"
 $ kubectl describe pod TOM
 $ kubectl describe pods kuard
+$ kubectl get pods --selector="app=bandicoot,ver=2"
+$ kubectl get pods --selector="app in (alpaca,bandicoot)"
 
 $ kubectl delete pod pod-name
 $ kubectl delete pods/kuard
@@ -152,6 +156,9 @@ $ kubectl delete -f obj.yaml
 
 ```
 $ kubectl get deployments
+$ kubectl get deployments -A
+$ kubectl describe deployments
+
 $ kubectl run TOM --image=TOM --record
 ```
 
@@ -181,6 +188,7 @@ $ kubectl scale deployment coredns -n kube-system --replicas=1
 $ kubectl scale deployment pod --replicas=0
 # start the pod
 $ kubectl scale deployment pod --replicas=1
+$ kubectl scale deployments kuard --replicas=2
 ```
 
 
