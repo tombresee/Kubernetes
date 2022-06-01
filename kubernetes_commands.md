@@ -660,9 +660,9 @@ IPs:
   IP:  10.1.0.111
 Containers:
   nginx:
-    Container ID:   docker://a06bb06219edc8863966bb35b883f517eb7891fc10c646e4db2fae54a562a814
+    Container ID:   docker://a06bb062etc2fae54a562a814
     Image:          nginx:1.14.2
-    Image ID:       docker-pullable://nginx@sha256:f7988fb6c02e0ce69257d9bd9cf37ae20a60f1df7563c3a2a6abe24160306b8d
+    Image ID:       docker-pullable://nginx@sha256:f7988fb6...etc
     Port:           80/TCP
     Host Port:      0/TCP
     State:          Running
