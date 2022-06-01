@@ -31,11 +31,12 @@ List of general purpose commands for Kubernetes management:
 - [Security Contexts](#security-contexts)
 - [Pod Security Policies](#pod-security-policies)
 - [Network Policies](#network_policies)
+- [Context](#context)
 - [Jobs](#jobs)
 - [etcd](#etcd)
 - [kubectl --help](#kubectl--help)
-
-
+- [use](#use)
+- [links](#links)
 
 
 <br>
@@ -127,7 +128,6 @@ $ kubectl delete -f obj.yaml
 
 ## Deployments
 
-
 ```
 $ kubectl get deployments
 $ kubectl get deployments -A
@@ -137,7 +137,24 @@ $ kubectl run TOM --image=TOM --record
 # how many replicas of each pod are running
 $ kubectl describe deployments.apps dns-autoscaler -n kube-system | grep Replicas
 
-
+# manually scaling a deployment
+$ kubectl scale deployment app-cache --replicas=6
+$ kubectl get pods
+NAME                         READY   STATUS              RESTARTS   AGE
+app-cache-5d6748d8b9-6cc4j   1/1     ContainerCreating   0          11s
+app-cache-5d6748d8b9-6rmlj   1/1     Running             0          28m
+app-cache-5d6748d8b9-6z7g5   1/1     ContainerCreating   0          11s
+app-cache-5d6748d8b9-96dzf   1/1     Running             0          28m
+app-cache-5d6748d8b9-jkjsv   1/1     Running             0          28m
+app-cache-5d6748d8b9-svrxw   1/1     Running             0          28m
+$ kubectl get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+app-cache-5d6748d8b9-6cc4j   1/1     Running   0          3m17s
+app-cache-5d6748d8b9-6rmlj   1/1     Running   0          32m
+app-cache-5d6748d8b9-6z7g5   1/1     Running   0          3m17s
+app-cache-5d6748d8b9-96dzf   1/1     Running   0          32m
+app-cache-5d6748d8b9-jkjsv   1/1     Running   0          31m
+app-cache-5d6748d8b9-svrxw   1/1     Running   0          32m
 ```
 
 
@@ -449,9 +466,9 @@ Docs: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 Docs: https://github.com/kubernetes/kubernetes/blob/master/examples/podsecuritypolicy/rbac/README.md
 
 
+
+
 <br>
-
-
 
 ## Network Policies
 
@@ -469,6 +486,31 @@ https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/
 <br>
 
 
+
+
+
+<br>
+
+## Context
+
+```
+$ kubectl config current-context
+$ kubectl config use-context some-defined-context
+# service account
+$ kubectl create serviceaccount build-bot
+$ kubectl get serviceaccounts
+$ kubectl run build-observer --image=alpine --restart=Never --serviceaccount=build-bot
+
+# create role
+$ kubectl create role read-only --verb=list,get,watch --resource=pods,deployments,services
+$ kubectl get roles
+```
+
+
+
+
+
+<br>
 
 ## Jobs
 
@@ -578,168 +620,6 @@ Use "kubectl options" for a list of global command-line options (applies to all 
 ```
 
 
-<br><br><br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -748,4 +628,184 @@ Use "kubectl options" for a list of global command-line options (applies to all 
 
 
 <br>
+
+## use
+
+```
+(base) PS C:\Windows\system32> kubectl get replicasets -A
+NAMESPACE     NAME                 DESIRED   CURRENT   READY   AGE
+kube-system   coredns-6d4b75cb6d   2         2         2       7m3s
+
+(base) PS C:\Windows\system32> kubectl auth can-i --list
+Resources                                       Non-Resource URLs   Resource Names   Verbs
+*.*                                             []                  []               [*]
+                                                [*]                 []               [*]
+selfsubjectaccessreviews.authorization.k8s.io   []                  []               [create]
+selfsubjectrulesreviews.authorization.k8s.io    []                  []               [create]
+                                                [/api/*]            []               [get]
+                                                [/api]              []               [get]
+                                                [/apis/*]           []               [get]
+                                                [/apis]             []               [get]
+                                                [/healthz]          []               [get]
+                                                [/healthz]          []               [get]
+                                                [/livez]            []               [get]
+                                                [/livez]            []               [get]
+                                                [/openapi/*]        []               [get]
+                                                [/openapi]          []               [get]
+                                                [/readyz]           []               [get]
+                                                [/readyz]           []               [get]
+                                                [/version/]         []               [get]
+                                                [/version/]         []               [get]
+                                                [/version]          []               [get]
+                                                [/version]          []               [get]
+
+
+
+The most basic topology of a Kubernetes cluster consists of a single node 
+that acts as the control plane and the worker node at the same time. 
+By default, many developer-centric Kubernetes installations like 
+Docker Desktop start with this configuration...
+
+While a single node cluster may be a good option for a Kubernetes playground, 
+it is not a good foundation for scalability and high-availability reasons. 
+At the very least, you will want to create a cluster with a single control 
+plane and one or many nodes handling the workload.
+
+
+Drain the control plane node by evicting workload. 
+New workload won’t be schedulable on the node until uncordoned.
+$ kubectl drain kube-control-plane --ignore-daemonsets
+node/kube-control-plane cordoned
+
+Restart the kubelet process.
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart kubelet
+
+# Reenable the control plane node back so 
+# that new workload can become schedulable.
+$ kubectl uncordon kube-control-plane
+node/kube-control-plane uncordoned
+
+
+# Etcd is deployed as a Pod in the kube-system namespace.
+
+$ kubectl get pods -n kube-system
+NAME                                     READY   STATUS    RESTARTS   AGE
+coredns-6d4b75cb6d-2p88j                 1/1     Running   0          17m
+coredns-6d4b75cb6d-nr5qd                 1/1     Running   0          17m
+etcd-docker-desktop                      1/1     Running   19         17m
+kube-apiserver-docker-desktop            1/1     Running   19         17m
+kube-controller-manager-docker-desktop   1/1     Running   19         17m
+kube-proxy-xddd2                         1/1     Running   0          17m
+kube-scheduler-docker-desktop            1/1     Running   19         17m
+storage-provisioner                      1/1     Running   0          16m
+vpnkit-controller                        1/1     Running   0          16m
+
+
+# --- examining etcd --- 
+
+$ kubectl describe pod etcd-docker-desktop -n kube-system
+Name:                 etcd-docker-desktop
+Namespace:            kube-system
+Priority:             2000001000
+Priority Class Name:  system-node-critical
+Node:                 docker-desktop/192.168.65.4
+Start Time:           Wed, 01 Jun 2022 10:52:20 -0500
+Labels:               component=etcd
+                      tier=control-plane
+Annotations:          kubeadm.kubernetes.io/etcd.advertise-client-urls: https://192.168.65.4:2379
+                      kubernetes.io/config.hash: 2449ddc0985e3be8dd23ffc4d12cb53b
+                      kubernetes.io/config.mirror: 2449ddc0985e3be8dd23ffc4d12cb53b
+                      kubernetes.io/config.seen: 2022-06-01T15:52:20.371801696Z
+                      kubernetes.io/config.source: file
+                      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+Status:               Running
+IP:                   192.168.65.4
+IPs:
+  IP:           192.168.65.4
+Controlled By:  Node/docker-desktop
+Containers:
+  etcd:
+    Container ID:  docker://6337190918cd161f193c85bd1fbd03a0f518b21014b60a2136edff412b7d74e5
+    Image:         k8s.gcr.io/etcd:3.5.3-0
+    Image ID:      docker://sha256:aebe758cef4cd05b9f8cee39758227714d02f42ef3088023c1e3cd454f927a2b
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      etcd
+      --advertise-client-urls=https://192.168.65.4:2379
+      --cert-file=/run/config/pki/etcd/server.crt
+      --client-cert-auth=true
+      --data-dir=/var/lib/etcd
+      --experimental-initial-corrupt-check=true
+      --initial-advertise-peer-urls=https://192.168.65.4:2380
+      --initial-cluster=docker-desktop=https://192.168.65.4:2380
+      --key-file=/run/config/pki/etcd/server.key
+      --listen-client-urls=https://127.0.0.1:2379,https://192.168.65.4:2379
+      --listen-metrics-urls=http://127.0.0.1:2381
+      --listen-peer-urls=https://192.168.65.4:2380
+      --name=docker-desktop
+      --peer-cert-file=/run/config/pki/etcd/peer.crt
+      --peer-client-cert-auth=true
+      --peer-key-file=/run/config/pki/etcd/peer.key
+      --peer-trusted-ca-file=/run/config/pki/etcd/ca.crt
+      --snapshot-count=10000
+      --trusted-ca-file=/run/config/pki/etcd/ca.crt
+    State:          Running
+      Started:      Wed, 01 Jun 2022 10:52:21 -0500
+    Ready:          True
+    Restart Count:  19
+    Requests:
+      cpu:        100m
+      memory:     100Mi
+    Liveness:     http-get http://127.0.0.1:2381/health delay=10s timeout=15s period=10s #success=1 #failure=8
+    Startup:      http-get http://127.0.0.1:2381/health delay=10s timeout=15s period=10s #success=1 #failure=24
+    Environment:  <none>
+    Mounts:
+      /run/config/pki/etcd from etcd-certs (rw)
+      /var/lib/etcd from etcd-data (rw)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  etcd-certs:
+    Type:          HostPath (bare host directory volume)
+    Path:          /run/config/pki/etcd
+    HostPathType:  DirectoryOrCreate
+  etcd-data:
+    Type:          HostPath (bare host directory volume)
+    Path:          /var/lib/etcd
+    HostPathType:  DirectoryOrCreate
+QoS Class:         Burstable
+Node-Selectors:    <none>
+Tolerations:       :NoExecute op=Exists
+Events:
+  Type    Reason   Age   From     Message
+  ----    ------   ----  ----     -------
+  Normal  Pulled   18m   kubelet  Container image "k8s.gcr.io/etcd:3.5.3-0" already present on machine
+  Normal  Created  18m   kubelet  Created container etcd
+  Normal  Started  18m   kubelet  Started container etcd
+
+# Edit the YAML manifest of the etcd Pod which can be found at 
+# /etc/kubernetes/manifests/etcd.yaml
+
+
+# The central API resource for running an application in a container is the Pod.
+```
+
+
+
 <br>
+
+## links
+
+* https://kubernetes.io/docs/concepts/architecture/
+* 
+
+
+
+
+<br><br><br><br><br><br>
