@@ -35,6 +35,7 @@ List of general purpose commands for Kubernetes management:
 - [Jobs](#jobs)
 - [etcd](#etcd)
 - [kubectl --help](#kubectl--help)
+- [yaml](#yaml)
 - [use](#use)
 - [links](#links)
 
@@ -623,6 +624,31 @@ Use "kubectl options" for a list of global command-line options (applies to all 
 
 
 
+<br>
+
+## yaml
+
+```yaml
+
+# pods/simple-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+
+```
+kubectl apply -f https://k8s.io/examples/pods/simple-pod.yaml
+```
+
+
+
 
 
 
@@ -631,6 +657,7 @@ Use "kubectl options" for a list of global command-line options (applies to all 
 
 ## use
 
+Basics 
 ```
 (base) PS C:\Windows\system32> kubectl get replicasets -A
 NAMESPACE     NAME                 DESIRED   CURRENT   READY   AGE
@@ -797,12 +824,142 @@ Events:
 ```
 
 
+Nodes: 
+
+```
+(base) PS C:\Windows\system32> kubectl get pods -A
+NAMESPACE     NAME                                     READY   STATUS    RESTARTS        AGE
+kube-system   coredns-6d4b75cb6d-2p88j                 1/1     Running   0               34m
+kube-system   coredns-6d4b75cb6d-nr5qd                 1/1     Running   0               34m
+kube-system   etcd-docker-desktop                      1/1     Running   19              34m
+kube-system   kube-apiserver-docker-desktop            1/1     Running   19              34m
+kube-system   kube-controller-manager-docker-desktop   1/1     Running   19              34m
+kube-system   kube-proxy-xddd2                         1/1     Running   0               34m
+kube-system   kube-scheduler-docker-desktop            1/1     Running   19              34m
+kube-system   storage-provisioner                      1/1     Running   0               33m
+kube-system   vpnkit-controller                        1/1     Running   2 (8m10s ago)   33m
+
+
+$ kubectl get nodes
+NAME             STATUS   ROLES           AGE   VERSION
+docker-desktop   Ready    control-plane   32m   v1.24.0
+
+
+$ kubectl describe nodes docker-desktop
+
+Name:               docker-desktop
+
+Roles:              control-plane
+
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=docker-desktop
+                    kubernetes.io/os=linux
+                    node-role.kubernetes.io/control-plane=
+                    node.kubernetes.io/exclude-from-external-load-balancers=
+
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/cri-dockerd.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+
+CreationTimestamp:  Wed, 01 Jun 2022 10:52:24 -0500
+
+Taints:             <none>
+
+Unschedulable:      false
+
+Lease:
+  HolderIdentity:  docker-desktop
+  AcquireTime:     <unset>
+  RenewTime:       Wed, 01 Jun 2022 11:26:02 -0500
+
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+
+  # True if pressure exists on the node memory—that is, if the node memory is low
+  MemoryPressure   False   Wed, 01 Jun 2022 11:26:07 -0500   Wed, 01 Jun 2022 10:52:21 -0500   KubeletHasSufficientMemory   kubelet has sufficient memory available
+
+  DiskPressure     False   Wed, 01 Jun 2022 11:26:07 -0500   Wed, 01 Jun 2022 10:52:21 -0500   KubeletHasNoDiskPressure     kubelet has no disk pressure
+
+  PIDPressure      False   Wed, 01 Jun 2022 11:26:07 -0500   Wed, 01 Jun 2022 10:52:21 -0500   KubeletHasSufficientPID      kubelet has sufficient PID 
+available
+
+  Ready            True    Wed, 01 Jun 2022 11:26:07 -0500   Wed, 01 Jun 2022 10:52:54 -0500   KubeletReady                 kubelet is posting ready status
+
+Addresses:
+  InternalIP:  192.168.65.4 < - typically the IP address of the node that is 
+                                routable only within the cluster.
+  Hostname:    docker-desktop
+
+Capacity:
+  cpu:                24
+  ephemeral-storage:  263174212Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             52602964Ki
+  pods:               110
+
+Allocatable:
+  cpu:                24
+  ephemeral-storage:  242541353378
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             52500564Ki
+  pods:               110
+
+System Info:
+  Machine ID:                 27bb5c95-c4b7-438c-bed1-ed90bac37fb7
+  System UUID:                27bb5c95-c4b7-438c-bed1-ed90bac37fb7
+  Boot ID:                    9e96b887-82ca-4468-91cf-121376cb0047
+  Kernel Version:             5.10.16.3-microsoft-standard-WSL2
+  OS Image:                   Docker Desktop
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://20.10.14
+  Kubelet Version:            v1.24.0
+  Kube-Proxy Version:         v1.24.0
+
+Non-terminated Pods:          (9 in total)
+  Namespace                   Name                                      CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                      ------------  ----------  ---------------  -------------  ---
+  kube-system                 coredns-6d4b75cb6d-2p88j                  100m (0%)     0 (0%)      70Mi (0%)        170Mi (0%)     33m
+  kube-system                 coredns-6d4b75cb6d-nr5qd                  100m (0%)     0 (0%)      70Mi (0%)        170Mi (0%)     33m
+  kube-system                 etcd-docker-desktop                       100m (0%)     0 (0%)      100Mi (0%)       0 (0%)         33m
+  kube-system                 kube-apiserver-docker-desktop             250m (1%)     0 (0%)      0 (0%)           0 (0%)         33m
+  kube-system                 kube-controller-manager-docker-desktop    200m (0%)     0 (0%)      0 (0%)           0 (0%)         33m
+  kube-system                 kube-proxy-xddd2                          0 (0%)        0 (0%)      0 (0%)           0 (0%)         33m
+  kube-system                 kube-scheduler-docker-desktop             100m (0%)     0 (0%)      0 (0%)           0 (0%)         33m
+  kube-system                 storage-provisioner                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         33m
+  kube-system                 vpnkit-controller                         0 (0%)        0 (0%)      0 (0%)           0 (0%)         33m
+
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                850m (3%)   0 (0%)
+  memory             240Mi (0%)  340Mi (0%)
+  ephemeral-storage  0 (0%)      0 (0%)
+  hugepages-1Gi      0 (0%)      0 (0%)
+  hugepages-2Mi      0 (0%)      0 (0%)
+
+Events:
+  Type    Reason                   Age                From        Message
+  ----    ------                   ----               ----        -------
+  Normal  Starting                 33m                kube-proxy
+  Normal  NodeHasSufficientMemory  33m (x8 over 33m)  kubelet     Node docker-desktop status is now: NodeHasSufficientMemory
+  Normal  NodeHasNoDiskPressure    33m (x7 over 33m)  kubelet     Node docker-desktop status is now: NodeHasNoDiskPressure
+  Normal  NodeHasSufficientPID     33m (x7 over 33m)  kubelet     Node docker-desktop status is now: NodeHasSufficientPID
+
+
 
 <br>
 
 ## links
 
 * https://kubernetes.io/docs/concepts/architecture/
+* https://kubernetes.io/docs/concepts/architecture/nodes/#addresses
 * 
 
 
