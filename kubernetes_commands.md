@@ -1011,8 +1011,8 @@ Events:
 
 * https://kubernetes.io/docs/concepts/architecture/
 * https://kubernetes.io/docs/concepts/architecture/nodes/#addresses
-* 
-
+* Left off here:
+  * https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
 
 
 
