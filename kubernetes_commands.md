@@ -6,6 +6,7 @@
 <br>
 
 
+
 List of general purpose commands for Kubernetes management:
 
 - [all](#all)
@@ -33,11 +34,15 @@ List of general purpose commands for Kubernetes management:
 - [Network Policies](#network_policies)
 - [Context](#context)
 - [Jobs](#jobs)
+- [Metrics](#metrics)
 - [etcd](#etcd)
 - [kubectl --help](#kubectl--help)
 - [yaml](#yaml)
 - [use](#use)
 - [links](#links)
+
+
+
 
 
 <br>
@@ -57,6 +62,7 @@ $ kubectl get all
 $ kubectl get all -A 
 $ kubectl get pods,services, rs
 ```
+
 
 
 
@@ -85,10 +91,18 @@ $ kubectl delete pods/kuard
 $ kubectl explain pods
 $ kubectl run kuard --generator=run-pod/v1 --image=gcr.io/kuar-demo/kuard-amd64:blue
 $ kubectl apply -f kuard-pod.yaml
+
+$ kubectl apply -f https://raw.githubusercontent.com/pythianarora/total-practice/master/sample-kubernetes-code/metrics-server.yaml
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
-<br>
 
+
+
+
+
+
+<br>
 
 ## Nodes
 
@@ -112,6 +126,10 @@ $ kubectl uncordon node_name
 
 
 
+
+
+<br>
+
 ## Create
 
 ```
@@ -123,9 +141,8 @@ $ kubectl delete -f obj.yaml
 
 
 
+
 <br>
-
-
 
 ## Deployments
 
@@ -159,6 +176,71 @@ app-cache-5d6748d8b9-svrxw   1/1     Running   0          32m
 ```
 
 
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    spec:
+      serviceAccountName: metrics-server
+      volumes:
+      # mount in tmp so we can safely use from-scratch images and/or read-only containers
+      - name: tmp-dir
+        emptyDir: {}
+      priorityClassName: system-cluster-critical
+      containers:
+      - name: metrics-server
+        image: gcr.io/k8s-staging-metrics-server/metrics-server:master
+        imagePullPolicy: IfNotPresent
+        args:
+          - --cert-dir=/tmp
+          - --secure-port=4443
+          - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+          - --kubelet-use-node-status-port
+          - --metric-resolution=15s
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        ports:
+        - name: https
+          containerPort: 4443
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
+          failureThreshold: 3
+          initialDelaySeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
+          failureThreshold: 3
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: tmp-dir
+          mountPath: /tmp
+      nodeSelector:
+        kubernetes.io/os: linux
+```
+
+
 
 
 <br>
@@ -184,10 +266,8 @@ $ kubectl label deployments alpaca-test "canary=true"  # modify labels
 
 
 
+
 <br>
-
-
-
 
 ## Scaling PODs
 
@@ -203,9 +283,10 @@ $ kubectl scale deployment coredns -n kube-system --replicas=0 (or 1)
 ```
 
 
+
+
+
 <br>
-
-
 
 ## POD Upgrade and history
 
@@ -222,9 +303,11 @@ $ kubectl rollout undo deployment/DEPLOYMENT_NAME --to-revision=N
 ```
 
 
+
+
+
+
 <br>
-
-
 
 ## Services
 
@@ -236,15 +319,31 @@ $ kubectl get services --all-namespaces
 ```
 
 Expose PODs as services (creates endpoints)
-
 ```
 $ kubectl expose deployment/TOM --port=2001 --type=NodePort
 ```
 
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-server
+  namespace: kube-system
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+```
+
+
+
+
+
 
 <br>
-
-
 
 ## Volumes
 
@@ -256,9 +355,10 @@ $ kubectl get pvc --all-namespaces
 ```
 
 
+
+
+
 <br>
-
-
 
 ## Secrets
 
@@ -269,9 +369,11 @@ $ kubectl create secret generic mysql --from-literal=password=root
 $ kubectl get secrets mysql -o yaml
 ```
 
+
+
+
+
 <br>
-
-
 
 ## Port Forwarding 
 
@@ -281,9 +383,11 @@ $ kubectl port-forward kuard 8080:8080  # access the pod
 ```
 
 
+
+
+
+
 <br>
-
-
 
 ## ConfigMaps
 
@@ -293,9 +397,10 @@ $ kubectl get configmap foobar -o yaml
 ```
 
 
+
+
+
 <br>
-
-
 
 ## DNS
 
@@ -315,9 +420,11 @@ $ kubectl exec -it $(kubectl get pods | awk '/role-manager/{print $1;exit}') -c 
 > Note: kube-proxy running in the worker nodes manage services and set iptables rules to direct traffic.
 
 
+
+
+
+
 <br>
-
-
 
 ## Ingress
 
@@ -334,9 +441,9 @@ Spec for ingress:
  
 
 
+
+
 <br>
-
-
 
 ## Horizontal Pod Autoscalers
 
@@ -349,9 +456,9 @@ $ kubectl autoscale --help
 
 
 
+
+
 <br>
-
-
 
 ## DaemonSets
 
@@ -361,9 +468,10 @@ $ kubectl get ds
 ```
 
 
+
+
+
 <br>
-
-
 
 ## Scheduler
 
@@ -382,9 +490,11 @@ $ curl -H "Content-Type: application/json" -X POST --data @binding.json http://l
 ```
 
 
+
+
+
+
 <br>
-
-
 
 ## Tains and Tolerations
 
@@ -393,9 +503,10 @@ $ kubectl taint node master foo=bar:NoSchedule
 ```
 
 
+
+
+
 <br>
-
-
 
 ## Troubleshooting
 
@@ -421,15 +532,16 @@ $ kubectl get pods -n kube-system  # specific core implementation
 ```
 
 
-
 Docs Cluster: 
 - https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
 - https://github.com/kubernetes/kubernetes/wiki/Debugging-FAQ
 
 
+
+
+
+
 <br>
-
-
 
 ## Role Based Access Control
 
@@ -445,9 +557,10 @@ $ kubectl get rolebinding foo -o yaml
 ```
 
 
+
+
+
 <br>
-
-
 
 ## Security Contexts
 
@@ -458,13 +571,16 @@ Docs: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
    - runAsNonRoot: true
    
 
+
+
+
 <br>
-
-
 
 ## Pod Security Policies
 
 Docs: https://github.com/kubernetes/kubernetes/blob/master/examples/podsecuritypolicy/rbac/README.md
+
+
 
 
 
@@ -482,9 +598,6 @@ $ kubectl annotate ns <namespace> "net.beta.kubernetes.io/network-policy={\"ingr
 More about Network Policies as a resource: 
 
 https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/
-
-
-<br>
 
 
 
@@ -510,11 +623,9 @@ $ kubectl get roles
 
 
 
-
 <br>
 
 ## Jobs
-
 
 Commands
 ```
@@ -527,12 +638,28 @@ $ kubectl delete jobs.batch job
 ```
 
 
+
+
 <br>
 
+## Metrics
 
+You can use Metrics Server for:
+* CPU/Memory based horizontal autoscaling
+* Automatically adjusting/suggesting resources needed by containers (vertical autoscaling)
+
+```
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability.yaml
+```
+
+
+
+
+
+<br>
 
 ## etcd
-
 
 ```
 $ systemctl stop etcd
@@ -540,9 +667,9 @@ $ systemctl stop etcd
 
 
 
+
+
 <br>
-
-
 
 ## kubectl--help 
 
@@ -698,6 +825,7 @@ Events:
   Normal  Created    3m35s  kubelet            Created container nginx
   Normal  Started    3m35s  kubelet            Started container nginx
 ```
+
 
 
 
@@ -1006,6 +1134,7 @@ Events:
 
 
 
+
 <br>
 
 ## links
@@ -1019,6 +1148,8 @@ Events:
 * https://www.study4exam.com/linux-foundation/info/cka
 * Left off here:
   * https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
+* https://grafana.com/blog/2021/12/02/new-in-the-kubernetes-integration-for-grafana-cloud-curated-dashboards-built-in-alerts-and-more/?src=ggl-s&mdm=cpc&camp=nb-kubernetes-exact&cnt=137839432452&trm=kubernetes%20pod%20metrics&device=c&gclid=EAIaIQobChMI46mHxu6M-AIVyiZMCh1paAPfEAAYASAAEgIQKvD_BwE
+
 
 
 
